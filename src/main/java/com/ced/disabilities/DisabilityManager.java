@@ -35,6 +35,12 @@ public final class DisabilityManager {
 			.syncWith(ByteBufCodecs.VAR_INT, AttachmentSyncPredicate.targetOnly())
 			.buildAndRegister(Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "countdown"));
 
+	/** Ticks left per severity timer as last sent to the client (about once a second). */
+	public static final AttachmentType<java.util.Map<String, Integer>> TIMER_VIEW = AttachmentRegistry.<java.util.Map<String, Integer>>builder()
+			.initializer(java.util.Map::of)
+			.syncWith(ByteBufCodecs.map(java.util.HashMap::new, ByteBufCodecs.STRING_UTF8, ByteBufCodecs.VAR_INT), AttachmentSyncPredicate.targetOnly())
+			.buildAndRegister(Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "timer_view"));
+
 	private DisabilityManager() {
 	}
 
@@ -113,8 +119,13 @@ public final class DisabilityManager {
 				if (old != null && (severity == null || severity.equals(Disabilities.severity(id)))) remove(player, old);
 			}
 		}
-		Disability d = Disabilities.pickRandom(owned(player), severity);
-		if (d != null) give(player, d);
+		DisabilityConfig cfg = DisabilityConfig.get();
+		double roll = java.util.concurrent.ThreadLocalRandom.current().nextDouble();
+		int count = roll < cfg.chanceThree ? 3 : roll < cfg.chanceThree + cfg.chanceTwo ? 2 : 1;
+		for (int i = 0; i < count; i++) {
+			Disability d = Disabilities.pickRandom(owned(player), severity);
+			if (d != null) give(player, d);
+		}
 	}
 
 	public static void tick(ServerPlayer player) {
@@ -137,6 +148,7 @@ public final class DisabilityManager {
 			if (shortest < 0 || left < shortest) { shortest = left; shortestLen = interval; }
 		}
 		player.setAttached(TIMERS, timers);
+		if (player.tickCount % 20 == 0) player.setAttached(TIMER_VIEW, new java.util.HashMap<>(timers));
 		if (shortest < 0) {
 			if (player.getAttachedOrElse(COUNTDOWN, -1) != -1) player.setAttached(COUNTDOWN, -1);
 			return;

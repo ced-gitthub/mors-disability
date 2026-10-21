@@ -190,6 +190,8 @@ public class DisabilityClient implements ClientModInitializer {
 	private static int lastSynced = -1;
 	private static long lastSyncedAt;
 	private static int barMax = 1;
+	private static java.util.Map<String, Integer> lastView = java.util.Map.of();
+	private static long viewAt;
 
 	private static int remainingTicks(Minecraft mc) {
 		clientTick = mc.player.tickCount;
@@ -226,6 +228,8 @@ public class DisabilityClient implements ClientModInitializer {
 		}
 		if (!showList || owned.contains("anosognosia")) return;
 		int remaining = remainingTicks(mc);
+		var view = mc.player.getAttachedOrElse(DisabilityManager.TIMER_VIEW, java.util.Map.<String, Integer>of());
+		if (!view.equals(lastView)) { lastView = view; viewAt = mc.player.tickCount; }
 		var font = mc.font;
 
 		int x = 4, y = 4;
@@ -235,7 +239,7 @@ public class DisabilityClient implements ClientModInitializer {
 		if (!collapsed) {
 			for (String id : owned) {
 				Disability d = Disabilities.get(id);
-				w = Math.max(w, 18 + font.width(d != null ? d.displayName : id));
+				w = Math.max(w, 18 + font.width(d != null ? d.displayName : id) + 34);
 			}
 		}
 		w += 10;
@@ -272,6 +276,12 @@ public class DisabilityClient implements ClientModInitializer {
 					Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "textures/gui/disability/" + id + ".png"),
 					x + 3, ry + 1, 0f, 0f, 10, 10, 16, 16, 16, 16);
 			g.text(font, d != null ? d.displayName : id, x + 17, ry + 2, 0xFFFFFFFF, true);
+			Integer left = view.get(Disabilities.severity(id));
+			if (left != null) {
+				int secs = Math.max(0, left - (int) (mc.player.tickCount - viewAt)) / 20;
+				String t = String.format("%d:%02d", secs / 60, secs % 60);
+				g.text(font, t, x + w - 5 - font.width(t), ry + 2, 0xFF9090B0, true);
+			}
 			if (over && d != null) hovered = d;
 			ry += ROW_H;
 		}
