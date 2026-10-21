@@ -59,6 +59,8 @@ public final class DisabilityManager {
 		next.add(d.id);
 		player.setAttached(OWNED, List.copyOf(next));
 		d.onAdd(player);
+		int len = lengthFor(d.id);
+		if (len > 0) setTimer(player, d.id, len);
 		if (!next.contains("anosognosia")) player.sendSystemMessage(Component.literal("You gained a disability: " + d.displayName + " (" + d.description + ")"));
 		return true;
 	}
@@ -70,6 +72,7 @@ public final class DisabilityManager {
 		next.remove(d.id);
 		player.setAttached(OWNED, List.copyOf(next));
 		d.onRemove(player);
+		setTimer(player, d.id, null);
 		return true;
 	}
 
@@ -89,42 +92,43 @@ public final class DisabilityManager {
 		return d;
 	}
 
-	/** Timer keys with their length in ticks; "all" is the single timer used when no per-severity timers are configured. */
-	private static java.util.Map<String, Integer> activeTimers() {
+	/** How long one disability lasts, in ticks (0 = never ends); from its severity's timer, or the shared one. */
+	private static int lengthFor(String id) {
 		DisabilityConfig cfg = DisabilityConfig.get();
-		java.util.Map<String, Integer> out = new java.util.LinkedHashMap<>();
-		if (cfg.severityMinutes.isEmpty()) {
-			out.put("all", cfg.intervalTicks());
-		} else {
-			for (String s : Disabilities.SEVERITIES) {
-				out.put(s, DisabilityConfig.toTicks(cfg.severityMinutes.getOrDefault(s, cfg.intervalMinutes)));
-			}
-		}
-		return out;
+		if (cfg.severityMinutes.isEmpty()) return cfg.intervalTicks();
+		return DisabilityConfig.toTicks(cfg.severityMinutes.getOrDefault(Disabilities.severity(id), cfg.intervalMinutes));
 	}
 
-	/** Restarts every timer of this player at its full length. */
+	private static void setTimer(ServerPlayer player, String id, Integer ticks) {
+		java.util.Map<String, Integer> m = new java.util.HashMap<>(player.getAttachedOrElse(TIMERS, java.util.Map.of()));
+		if (ticks == null) m.remove(id); else m.put(id, ticks);
+		player.setAttached(TIMERS, m);
+	}
+
+	/** Restarts the timer of every disability this player owns at its full length. */
 	public static void resetTimers(ServerPlayer player) {
 		java.util.Map<String, Integer> fresh = new java.util.HashMap<>();
-		activeTimers().forEach((k, v) -> fresh.put(k, Math.max(1, v)));
+		for (String id : owned(player)) {
+			int len = lengthFor(id);
+			if (len > 0) fresh.put(id, len);
+		}
 		player.setAttached(TIMERS, fresh);
 	}
 
-	/** Gives one random disability from a timer's pool; in replace mode that pool's old disabilities go first. */
-	private static void fire(ServerPlayer player, String key) {
-		String severity = key.equals("all") ? null : key;
-		if ("replace".equals(DisabilityConfig.get().mode)) {
-			for (String id : new ArrayList<>(owned(player))) {
-				Disability old = Disabilities.get(id);
-				if (old != null && (severity == null || severity.equals(Disabilities.severity(id)))) remove(player, old);
-			}
-		}
+	/** A disability ran out: it goes, replaced by 1 other of its severity (sometimes 2, rarely 3). */
+	private static void expire(ServerPlayer player, String id) {
+		Disability old = Disabilities.get(id);
 		DisabilityConfig cfg = DisabilityConfig.get();
+		String severity = cfg.severityMinutes.isEmpty() ? null : Disabilities.severity(id);
+		List<String> exclude = new ArrayList<>(owned(player));
+		if (old != null) remove(player, old);
 		double roll = java.util.concurrent.ThreadLocalRandom.current().nextDouble();
 		int count = roll < cfg.chanceThree ? 3 : roll < cfg.chanceThree + cfg.chanceTwo ? 2 : 1;
 		for (int i = 0; i < count; i++) {
-			Disability d = Disabilities.pickRandom(owned(player), severity);
-			if (d != null) give(player, d);
+			Disability d = Disabilities.pickRandom(exclude, severity);
+			if (d == null) break;
+			exclude.add(d.id);
+			give(player, d);
 		}
 	}
 
@@ -134,27 +138,20 @@ public final class DisabilityManager {
 			if (d != null) d.tick(player);
 		}
 
-		java.util.Map<String, Integer> timers = new java.util.HashMap<>(player.getAttachedOrElse(TIMERS, java.util.Map.of()));
-		int shortest = -1, shortestLen = 0;
-		for (var e : activeTimers().entrySet()) {
-			int interval = e.getValue();
-			if (interval <= 0) continue;
-			int left = Math.min(timers.getOrDefault(e.getKey(), interval), interval) - 1;
-			if (left <= 0) {
-				fire(player, e.getKey());
-				left = interval;
-			}
-			timers.put(e.getKey(), left);
-			if (shortest < 0 || left < shortest) { shortest = left; shortestLen = interval; }
+		java.util.Map<String, Integer> old = player.getAttachedOrElse(TIMERS, java.util.Map.of());
+		java.util.Map<String, Integer> timers = new java.util.HashMap<>();
+		List<String> expired = new ArrayList<>();
+		for (String id : owned(player)) {
+			int len = lengthFor(id);
+			if (len <= 0) continue;
+			int left = Math.min(old.getOrDefault(id, len), len) - 1;
+			if (left <= 0) expired.add(id); else timers.put(id, left);
 		}
-		player.setAttached(TIMERS, timers);
-		if (player.tickCount % 20 == 0) player.setAttached(TIMER_VIEW, new java.util.HashMap<>(timers));
-		if (shortest < 0) {
-			if (player.getAttachedOrElse(COUNTDOWN, -1) != -1) player.setAttached(COUNTDOWN, -1);
-			return;
-		}
+		if (!timers.equals(old)) player.setAttached(TIMERS, timers);
+		for (String id : expired) expire(player, id);
 		// Synced about once a second; the client counts down locally in between.
-		int shown = player.getAttachedOrElse(COUNTDOWN, -1);
-		if (shortest == shortestLen || shortest % 20 == 0 || Math.abs(shown - shortest) > 40) player.setAttached(COUNTDOWN, shortest);
+		if (player.tickCount % 20 == 0 || !expired.isEmpty()) {
+			player.setAttached(TIMER_VIEW, new java.util.HashMap<>(player.getAttachedOrElse(TIMERS, java.util.Map.of())));
+		}
 	}
 }

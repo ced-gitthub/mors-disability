@@ -230,15 +230,13 @@ public class DisabilityClient implements ClientModInitializer {
 			g.fill(0, 0, mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight(), 0x66808080);
 		}
 		if (!showList || owned.contains("anosognosia")) return;
-		int remaining = remainingTicks(mc);
 		var view = mc.player.getAttachedOrElse(DisabilityManager.TIMER_VIEW, java.util.Map.<String, Integer>of());
 		if (!view.equals(lastView)) { lastView = view; viewAt = mc.player.tickCount; }
 		var font = mc.font;
 
 		int x = 4, y = 4;
 		String title = (collapsed ? "[+] " : "[-] ") + "Disabilities " + owned.size();
-		String timer = remaining < 0 ? "off" : String.format("%d:%02d", remaining / 1200, remaining / 20 % 60);
-		int w = font.width(title) + 8 + font.width(timer);
+		int w = font.width(title);
 		if (!collapsed) {
 			for (String id : owned) {
 				Disability d = Disabilities.get(id);
@@ -259,13 +257,6 @@ public class DisabilityClient implements ClientModInitializer {
 		g.outline(x, y, w, h, 0xFF5A5A78);
 		if (overHead) g.fill(x + 1, y + 1, x + w - 1, y + headH, 0x30FFFFFF);
 		g.text(font, title, x + 5, y + 3, 0xFFFFFFFF, true);
-		g.text(font, timer, x + w - 5 - font.width(timer), y + 3,
-				remaining >= 0 && remaining < 600 ? 0xFFFFAA55 : 0xFFB8B8D0, true);
-		if (remaining >= 0) {
-			int bw = w - 4;
-			g.fill(x + 2, y + headH, x + 2 + bw, y + headH + 1, 0xFF2A2A3C);
-			g.fill(x + 2, y + headH, x + 2 + (int) ((long) bw * remaining / Math.max(1, barMax)), y + headH + 1, 0xFF6EC8FF);
-		}
 		if (collapsed) return;
 
 		Disability hovered = null;
@@ -279,7 +270,7 @@ public class DisabilityClient implements ClientModInitializer {
 					Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "textures/gui/disability/" + id + ".png"),
 					x + 3, ry + 1, 0f, 0f, 10, 10, 16, 16, 16, 16);
 			g.text(font, d != null ? d.displayName : id, x + 17, ry + 2, 0xFFFFFFFF, true);
-			Integer left = view.get(Disabilities.severity(id));
+			Integer left = view.get(id);
 			if (left != null) {
 				int secs = Math.max(0, left - (int) (mc.player.tickCount - viewAt)) / 20;
 				String t = String.format("%d:%02d", secs / 60, secs % 60);
