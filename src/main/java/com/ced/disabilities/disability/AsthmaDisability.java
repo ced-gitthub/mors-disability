@@ -22,17 +22,21 @@ public class AsthmaDisability extends Disability {
 		UUID id = player.getUUID();
 		Integer left = attack.get(id);
 		if (left != null) {
-			if (left % 20 == 0) player.hurtServer(player.level(), player.damageSources().drown(), 2.0f);
+			if (left % 20 == 0) {
+				boolean hit = player.hurtServer(player.level(), player.damageSources().drown(), 2.0f);
+				if (Boolean.getBoolean("disabilitystack.selftest")) com.ced.disabilities.DisabilityMod.LOGGER.info("[selftest] asthma hit={} hp={}", hit, player.getHealth());
+			}
 			if (left <= 1) attack.remove(id); else attack.put(id, left - 1);
 			return;
 		}
-		if (!player.isSprinting()) {
+		if (!player.isSprinting() && !(Boolean.getBoolean("disabilitystack.selftest") && player.entityTags().contains("selftest_sprint"))) {
 			sprinting.remove(id);
 			return;
 		}
 		if (sprinting.merge(id, 1, Integer::sum) > LIMIT_TICKS) {
 			sprinting.remove(id);
 			attack.put(id, ATTACK_TICKS);
+			if (Boolean.getBoolean("disabilitystack.selftest")) com.ced.disabilities.DisabilityMod.LOGGER.info("[selftest] asthma attack started");
 		}
 	}
 

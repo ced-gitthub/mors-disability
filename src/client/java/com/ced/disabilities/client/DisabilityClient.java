@@ -52,6 +52,7 @@ public class DisabilityClient implements ClientModInitializer {
 			}
 			case "hkey" -> net.minecraft.client.KeyMapping.click(com.mojang.blaze3d.platform.InputConstants.Type.KEYSYM.getOrCreate(com.mojang.blaze3d.platform.InputConstants.KEY_H));
 			case "screen" -> mc.gui.openChatScreen(net.minecraft.client.gui.components.ChatComponent.ChatMethod.MESSAGE);
+			case "cam" -> mc.options.setCameraType(a[1].equals("3") ? net.minecraft.client.CameraType.THIRD_PERSON_BACK : net.minecraft.client.CameraType.FIRST_PERSON);
 			case "shot" -> net.minecraft.client.Screenshot.grab(mc, false);
 			case "respawn" -> mc.player.respawn();
 			case "setvol" -> mc.options.getSoundSourceOptionInstance(net.minecraft.sounds.SoundSource.MASTER).set(Double.parseDouble(a[1]));
