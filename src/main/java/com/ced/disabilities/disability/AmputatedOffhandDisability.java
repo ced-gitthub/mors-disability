@@ -15,6 +15,14 @@ public class AmputatedOffhandDisability extends Disability {
 		super("amputated_offhand", "Amputated Offhand", "You cannot use your offhand");
 	}
 
+	@Override
+	public void tick(net.minecraft.server.level.ServerPlayer player) {
+		net.minecraft.world.item.ItemStack off = player.getOffhandItem();
+		if (off.isEmpty()) return;
+		player.setItemInHand(InteractionHand.OFF_HAND, net.minecraft.world.item.ItemStack.EMPTY);
+		if (!player.getInventory().add(off)) player.drop(off, false);
+	}
+
 	private static boolean owns(Player p) {
 		return p.getAttachedOrElse(DisabilityManager.OWNED, List.<String>of()).contains("amputated_offhand");
 	}

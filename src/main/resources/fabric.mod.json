@@ -8,6 +8,7 @@
 	"license": "MIT",
 	"icon": "assets/mors-disability/icon.png",
 	"environment": "*",
+	"mixins": [{"config": "mors-disability.client.mixins.json", "environment": "client"}],
 	"entrypoints": {
 		"main": ["com.ced.disabilities.DisabilityMod"],
 		"client": ["com.ced.disabilities.client.DisabilityClient"]
