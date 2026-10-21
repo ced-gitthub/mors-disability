@@ -98,10 +98,22 @@ public class DisabilityClient implements ClientModInitializer {
 			restoreVolume(mc);
 		}
 		hideNameTags(mc, owned.contains("prosopagnosia"));
-		if (owned.contains("parkinsons") && mc.player != null && mc.gui.screen() == null && mc.player.isAlive()
-				&& RANDOM.nextInt(3) == 0) {
-			mc.player.turn((RANDOM.nextDouble() - 0.5) * 6, (RANDOM.nextDouble() - 0.5) * 6);
+		tremor(mc, owned.contains("parkinsons"));
+	}
+
+	private static int tremorLeft, tremorWait = 400;
+
+	/** Parkinson's: a constant light resting tremor, with sudden violent shaking episodes every so often. */
+	private static void tremor(Minecraft mc, boolean on) {
+		if (!on || mc.player == null || mc.gui.screen() != null || !mc.player.isAlive()) { tremorLeft = 0; return; }
+		if (tremorLeft > 0) {
+			tremorLeft--;
+			mc.player.turn((RANDOM.nextDouble() - 0.5) * 40, (RANDOM.nextDouble() - 0.5) * 30);
+			if (tremorLeft == 0) tremorWait = 400 + RANDOM.nextInt(800);
+			return;
 		}
+		if (--tremorWait <= 0) { tremorLeft = 60 + RANDOM.nextInt(80); dbg("parkinsons episode " + tremorLeft); return; }
+		if (RANDOM.nextInt(3) == 0) mc.player.turn((RANDOM.nextDouble() - 0.5) * 6, (RANDOM.nextDouble() - 0.5) * 6);
 	}
 
 	private static final String FACE_TEAM = "dsfaceblind";
