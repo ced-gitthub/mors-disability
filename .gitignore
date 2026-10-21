@@ -1,0 +1,7 @@
+build/
+.gradle/
+run/
+*.log
+client-out.txt
+client-err.txt
+.idea/
