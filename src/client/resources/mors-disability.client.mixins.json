@@ -4,5 +4,5 @@
 	"package": "com.ced.disabilities.client.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"client": ["PlayerModelMixin", "EntityRenderDispatcherMixin"],
-	"injectors": {"defaultRequire": 1}
+	"injectors": {"defaultRequire": 0}
 }
