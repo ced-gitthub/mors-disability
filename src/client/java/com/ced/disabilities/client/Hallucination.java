@@ -58,7 +58,8 @@ public final class Hallucination {
 		Fake f = FAKES.get(real.getId());
 		if (f == null || f.type != t) {
 			if (!(t.create(mc.level, EntitySpawnReason.LOAD) instanceof LivingEntity le)) return null;
-			f = new Fake(t, le);
+			le.setId(-1_000_000 - real.getId());
+				f = new Fake(t, le);
 			FAKES.put(real.getId(), f);
 			if (Boolean.getBoolean("disabilitystack.selftest")) DisabilityMod.LOGGER.info("[selftest] hallucinate {} -> {}", real.getType().toShortString(), t.toShortString());
 		}
