@@ -115,17 +115,18 @@ public final class DisabilityManager {
 		player.setAttached(TIMERS, fresh);
 	}
 
-	/** A disability ran out: it goes, replaced by 1 other of its severity (sometimes 2, rarely 3). */
-	private static void expire(ServerPlayer player, String id) {
-		Disability old = Disabilities.get(id);
+	/** Every timed disability has run out: they all go together, replaced by 1 new one (sometimes 2, rarely 3). */
+	private static void expireAll(ServerPlayer player, List<String> ids) {
 		DisabilityConfig cfg = DisabilityConfig.get();
-		String severity = cfg.severityMinutes.isEmpty() ? null : Disabilities.severity(id);
 		List<String> exclude = new ArrayList<>(owned(player));
-		if (old != null) remove(player, old);
+		for (String id : ids) {
+			Disability old = Disabilities.get(id);
+			if (old != null) remove(player, old);
+		}
 		double roll = java.util.concurrent.ThreadLocalRandom.current().nextDouble();
 		int count = roll < cfg.chanceThree ? 3 : roll < cfg.chanceThree + cfg.chanceTwo ? 2 : 1;
 		for (int i = 0; i < count; i++) {
-			Disability d = Disabilities.pickRandom(exclude, severity);
+			Disability d = Disabilities.pickRandom(exclude, null);
 			if (d == null) break;
 			exclude.add(d.id);
 			give(player, d);
@@ -141,16 +142,20 @@ public final class DisabilityManager {
 		java.util.Map<String, Integer> old = player.getAttachedOrElse(TIMERS, java.util.Map.of());
 		java.util.Map<String, Integer> timers = new java.util.HashMap<>();
 		List<String> expired = new ArrayList<>();
+		int timed = 0;
 		for (String id : owned(player)) {
 			int len = lengthFor(id);
 			if (len <= 0) continue;
-			int left = Math.min(old.getOrDefault(id, len), len) - 1;
-			if (left <= 0) expired.add(id); else timers.put(id, left);
+			timed++;
+			int left = Math.max(0, Math.min(old.getOrDefault(id, len), len) - 1);
+			timers.put(id, left);
+			if (left == 0) expired.add(id);
 		}
 		if (!timers.equals(old)) player.setAttached(TIMERS, timers);
-		for (String id : expired) expire(player, id);
+		boolean allDone = timed > 0 && expired.size() == timed;
+		if (allDone) expireAll(player, expired);
 		// Synced about once a second; the client counts down locally in between.
-		if (player.tickCount % 20 == 0 || !expired.isEmpty()) {
+		if (player.tickCount % 20 == 0 || allDone) {
 			player.setAttached(TIMER_VIEW, new java.util.HashMap<>(player.getAttachedOrElse(TIMERS, java.util.Map.of())));
 		}
 	}
