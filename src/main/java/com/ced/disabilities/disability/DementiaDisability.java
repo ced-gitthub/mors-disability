@@ -8,7 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSetHeldSlotPacket;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Clearable;
+import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -34,6 +34,9 @@ public class DementiaDisability extends Disability {
 	/** Per player: containers they used (dimension + position) and whether they have walked away from them since. */
 	private final Map<UUID, Map<String, Memory>> memories = new HashMap<>();
 
+	/** Container each player just clicked; remembered only if its menu actually opened. */
+	private final Map<UUID, BlockPos> pending = new HashMap<>();
+
 	private record Memory(Identifier dim, BlockPos pos, boolean[] away) {}
 
 	public DementiaDisability() {
@@ -43,7 +46,7 @@ public class DementiaDisability extends Disability {
 			UseBlockCallback.EVENT.register((player, level, hand, hit) -> {
 				if (player instanceof ServerPlayer sp && DisabilityManager.owned(sp).contains("dementia")) {
 					BlockPos pos = hit.getBlockPos();
-					if (level.getBlockEntity(pos) instanceof Container) remember(sp, pos);
+					if (level.getBlockEntity(pos) instanceof Container) pending.put(sp.getUUID(), pos.immutable());
 				}
 				return InteractionResult.PASS;
 			});
@@ -61,6 +64,8 @@ public class DementiaDisability extends Disability {
 
 	@Override
 	public void tick(ServerPlayer player) {
+		BlockPos clicked = pending.remove(player.getUUID());
+		if (clicked != null && player.containerMenu != player.inventoryMenu) remember(player, clicked);
 		forget(player);
 		if (RANDOM.nextInt(odds(4800)) != 0) return;
 		player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 160, 0, true, false, false));
@@ -84,11 +89,17 @@ public class DementiaDisability extends Disability {
 			if (d2 > AWAY_BLOCKS * AWAY_BLOCKS) { m.away()[0] = true; continue; }
 			if (!m.away()[0] || d2 > BACK_BLOCKS * BACK_BLOCKS) continue;
 			it.remove();
-			if (!(player.level().getBlockEntity(m.pos()) instanceof Container c) || !(c instanceof Clearable cl)) continue;
-			if (c.isEmpty()) continue;
+			if (!(player.level().getBlockEntity(m.pos()) instanceof Container c)) continue;
+			Container whole = c;
+			var state = player.level().getBlockState(m.pos());
+			if (state.getBlock() instanceof ChestBlock cb) {
+				Container combined = ChestBlock.getContainer(cb, state, player.level(), m.pos(), true);
+				if (combined != null) whole = combined;
+			}
+			if (whole.isEmpty()) continue;
 			if (RANDOM.nextInt(100) >= (Boolean.getBoolean("disabilitystack.selftest") ? 100 : 70)) continue;
-			cl.clearContent();
-			c.setChanged();
+			whole.clearContent();
+			whole.setChanged();
 			player.sendSystemMessage(Component.literal("Wait... didn't I leave something in there?"), true);
 			if (Boolean.getBoolean("disabilitystack.selftest")) DisabilityMod.LOGGER.info("[selftest] dementia wiped container at {}", m.pos());
 		}
@@ -97,10 +108,12 @@ public class DementiaDisability extends Disability {
 	@Override
 	public void onLeave(ServerPlayer player) {
 		memories.remove(player.getUUID());
+		pending.remove(player.getUUID());
 	}
 
 	@Override
 	public void onRemove(ServerPlayer player) {
 		memories.remove(player.getUUID());
+		pending.remove(player.getUUID());
 	}
 }

@@ -59,7 +59,7 @@ public final class Hallucination {
 	/** The stand-in to draw instead of {@code real}, or null to draw it normally. */
 	public static Entity replacement(Entity real) {
 		Minecraft mc = Minecraft.getInstance();
-		if (mc.level == null || real == mc.player || !(real instanceof LivingEntity living) || real instanceof ArmorStand || isFake(real)) return null;
+		if (mc.level == null || real == mc.player || real.isInvisible() || !(real instanceof LivingEntity living) || real instanceof ArmorStand || isFake(real)) return null;
 		if (!(real instanceof Player) && !(real instanceof Mob)) return null;
 		if (!active(mc)) return null;
 		int id = real.getId();

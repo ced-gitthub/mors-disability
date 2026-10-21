@@ -272,7 +272,10 @@ public class DisabilityClient implements ClientModInitializer {
 			g.text(font, d != null ? d.displayName : id, x + 17, ry + 2, 0xFFFFFFFF, true);
 			Integer left = view.get(id);
 			if (left != null) {
-				int secs = Math.max(0, left - (int) (mc.player.tickCount - viewAt)) / 20;
+				int elapsed = (int) (mc.player.tickCount - viewAt);
+				int rem = Math.max(0, left - elapsed);
+				if (rem == 0) for (int v : view.values()) rem = Math.max(rem, v - elapsed);
+				int secs = rem / 20;
 				String t = String.format("%d:%02d", secs / 60, secs % 60);
 				g.text(font, t, x + w - 5 - font.width(t), ry + 2, 0xFF9090B0, true);
 			}

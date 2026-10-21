@@ -99,6 +99,11 @@ public final class DisabilityManager {
 		return DisabilityConfig.toTicks(cfg.severityMinutes.getOrDefault(Disabilities.severity(id), cfg.intervalMinutes));
 	}
 
+	/** Timer key used while the player has no timed disability: when it runs out they get a new one. */
+	private static final String NEXT = "_next";
+
+	private static int cfg0() { return DisabilityConfig.get().intervalTicks(); }
+
 	private static void setTimer(ServerPlayer player, String id, Integer ticks) {
 		java.util.Map<String, Integer> m = new java.util.HashMap<>(player.getAttachedOrElse(TIMERS, java.util.Map.of()));
 		if (ticks == null) m.remove(id); else m.put(id, ticks);
@@ -151,9 +156,16 @@ public final class DisabilityManager {
 			timers.put(id, left);
 			if (left == 0) expired.add(id);
 		}
+		boolean bootstrap = false;
+		if (timed == 0 && owned(player).isEmpty() && player.isAlive() && cfg0() > 0) {
+			int left = Math.max(0, Math.min(old.getOrDefault(NEXT, cfg0()), cfg0()) - 1);
+			timers.put(NEXT, left);
+			if (left == 0) { timers.remove(NEXT); bootstrap = true; }
+		}
 		if (!timers.equals(old)) player.setAttached(TIMERS, timers);
-		boolean allDone = timed > 0 && expired.size() == timed;
-		if (allDone) expireAll(player, expired);
+		if (bootstrap) expireAll(player, List.of());
+		boolean allDone = bootstrap || (timed > 0 && expired.size() == timed);
+		if (allDone && !bootstrap) expireAll(player, expired);
 		// Synced about once a second; the client counts down locally in between.
 		if (player.tickCount % 20 == 0 || allDone) {
 			player.setAttached(TIMER_VIEW, new java.util.HashMap<>(player.getAttachedOrElse(TIMERS, java.util.Map.of())));
