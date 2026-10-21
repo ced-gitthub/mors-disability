@@ -177,6 +177,7 @@ public class DisabilityClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+		net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking.registerGlobalReceiver(com.ced.disabilities.ModCheck.Hello.TYPE, (payload, context) -> {});
 		KeyMapping toggle = KeyMappingHelper.registerKeyMapping(new KeyMapping(
 				"key.mors-disability.toggle_list", InputConstants.Type.KEYSYM, InputConstants.KEY_H,
 				KeyMapping.Category.register(Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "main"))));

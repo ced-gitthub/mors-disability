@@ -13,6 +13,7 @@ public class DisabilityMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		ModCheck.init();
 		DisabilityConfig.load();
 		DisabilityManager.init();
 		com.ced.disabilities.disability.Disabilities.init();
