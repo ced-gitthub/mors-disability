@@ -15,7 +15,7 @@ public class OcdDisability extends Disability {
 	private static final Random RANDOM = new Random();
 
 	public OcdDisability() {
-		super("ocd", "OCD", "You compulsively sort your inventory");
+		super("ocd", "OCD", "Compulsions: you keep sorting your inventory");
 	}
 
 	@Override

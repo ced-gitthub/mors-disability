@@ -11,7 +11,7 @@ public class AdhdDisability extends Disability {
 	private static final Random RANDOM = new Random();
 
 	public AdhdDisability() {
-		super("adhd", "ADHD", "Impulses you can't control: random jumps, item switches, drops and head twitches");
+		super("adhd", "ADHD", "Impulsivity and restlessness: random jumps, item switches, drops and head twitches");
 	}
 
 	@Override

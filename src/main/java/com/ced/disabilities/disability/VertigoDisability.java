@@ -9,7 +9,7 @@ import net.minecraft.world.effect.MobEffects;
 /** Standing with a long drop beneath you makes you dizzy and sluggish. */
 public class VertigoDisability extends Disability {
 	public VertigoDisability() {
-		super("vertigo", "Vertigo", "Heights make you dizzy");
+		super("vertigo", "Vertigo", "Dizziness and loss of balance at heights");
 	}
 
 	@Override

@@ -12,7 +12,7 @@ import java.util.List;
 /** The offhand can neither use items nor interact with blocks. Handled by events. */
 public class AmputatedOffhandDisability extends Disability {
 	public AmputatedOffhandDisability() {
-		super("amputated_offhand", "Amputated Offhand", "You cannot use your offhand");
+		super("amputated_offhand", "Amputated Offhand", "Loss of a hand or arm: the offhand is gone");
 	}
 
 	@Override

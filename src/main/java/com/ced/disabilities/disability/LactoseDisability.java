@@ -14,7 +14,7 @@ public class LactoseDisability extends Disability {
 	private final Map<UUID, Integer> dying = new HashMap<>();
 
 	public LactoseDisability() {
-		super("lactose_intolerance", "Lactose Intolerance", "Drinking milk starts a 5s slow death; only a golden apple cures it");
+		super("lactose_intolerance", "Lactose Intolerance", "Cannot digest milk: drinking it makes you violently ill (5s slow death, only a golden apple cures it)");
 	}
 
 	private static boolean finishing(ServerPlayer player, boolean golden) {

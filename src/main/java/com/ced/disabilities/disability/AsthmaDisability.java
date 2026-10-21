@@ -14,7 +14,7 @@ public class AsthmaDisability extends Disability {
 	private final Map<UUID, Integer> attack = new HashMap<>();
 
 	public AsthmaDisability() {
-		super("asthma", "Asthma", "Sprinting for 10s causes an attack: 1 heart per second for 3s");
+		super("asthma", "Asthma", "Airways narrow under exertion: sprinting for 10s triggers an attack (1 heart per second for 3s)");
 	}
 
 	@Override

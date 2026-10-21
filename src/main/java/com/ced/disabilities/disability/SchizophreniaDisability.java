@@ -15,7 +15,7 @@ public class SchizophreniaDisability extends Disability {
 			SoundEvents.ENDERMAN_STARE, SoundEvents.SKELETON_AMBIENT, SoundEvents.GHAST_SCREAM, SoundEvents.WOODEN_DOOR_OPEN};
 
 	public SchizophreniaDisability() {
-		super("schizophrenia", "Schizophrenia", "You hear things that are not there");
+		super("schizophrenia", "Schizophrenia", "Hallucinations: you hear and see things that are not there");
 	}
 
 	@Override

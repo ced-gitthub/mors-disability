@@ -14,7 +14,7 @@ public class TouretteDisability extends Disability {
 	private static final List<SoundEvent> NOISES = List.of(SoundEvents.ZOMBIE_AMBIENT, SoundEvents.VILLAGER_NO);
 
 	public TouretteDisability() {
-		super("tourette", "Tourette's", "Random noises and twitches");
+		super("tourette", "Tourette's", "Involuntary tics: random noises and twitches");
 	}
 
 	@Override

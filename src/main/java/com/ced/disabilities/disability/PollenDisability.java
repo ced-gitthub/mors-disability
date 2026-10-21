@@ -11,7 +11,7 @@ public class PollenDisability extends Disability {
 	private static final int RADIUS = 3;
 
 	public PollenDisability() {
-		super("pollen_allergy", "Pollen Allergy", "Flowers nearby poison you");
+		super("pollen_allergy", "Pollen Allergy", "Hay fever: flowers nearby poison you");
 	}
 
 	@Override

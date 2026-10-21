@@ -8,7 +8,7 @@ import net.minecraft.world.phys.AABB;
 /** Anything the player throws on the ground is snatched straight back. */
 public class KleptomaniaDisability extends Disability {
 	public KleptomaniaDisability() {
-		super("kleptomania", "Kleptomania", "You cannot drop items");
+		super("kleptomania", "Kleptomania", "Compulsive need to hold on: you cannot drop items");
 	}
 
 	@Override

@@ -10,7 +10,7 @@ public class CerebralPalsyDisability extends Disability {
 	private static final Random RANDOM = new Random();
 
 	public CerebralPalsyDisability() {
-		super("cerebral_palsy", "Cerebral Palsy", "You randomly stumble");
+		super("cerebral_palsy", "Cerebral Palsy", "Impaired muscle control: you randomly stumble");
 	}
 
 	@Override

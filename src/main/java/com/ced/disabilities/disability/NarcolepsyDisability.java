@@ -12,7 +12,7 @@ public class NarcolepsyDisability extends Disability {
 	private static final Random RANDOM = new Random();
 
 	public NarcolepsyDisability() {
-		super("narcolepsy", "Narcolepsy", "You randomly fall asleep");
+		super("narcolepsy", "Narcolepsy", "Sudden sleep attacks: you randomly collapse asleep");
 	}
 
 	@Override

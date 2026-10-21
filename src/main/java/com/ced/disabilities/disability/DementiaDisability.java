@@ -51,7 +51,7 @@ public class DementiaDisability extends Disability {
 	private record Memory(Identifier dim, BlockPos pos, boolean[] away) {}
 
 	public DementiaDisability() {
-		super("dementia", "Dementia", "You misremember: containers you used lose their contents while you're away");
+		super("dementia", "Dementia", "Memory loss and confusion: forgotten containers, and 'Where am I?' blackouts");
 		if (!registered) {
 			registered = true;
 			UseBlockCallback.EVENT.register((player, level, hand, hit) -> {

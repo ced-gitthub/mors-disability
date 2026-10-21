@@ -6,7 +6,7 @@ import net.minecraft.world.effect.MobEffects;
 
 public class BlindDisability extends Disability {
 	public BlindDisability() {
-		super("blind", "Blind", "Permanent blindness");
+		super("blind", "Blind", "Total loss of vision");
 	}
 
 	@Override

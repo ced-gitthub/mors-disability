@@ -12,7 +12,7 @@ public class SeizuresDisability extends Disability {
 	private static final Random RANDOM = new Random();
 
 	public SeizuresDisability() {
-		super("seizures", "Seizures", "You randomly have seizures");
+		super("seizures", "Seizures", "Sudden seizures: convulsions, nausea and near-immobility");
 	}
 
 	@Override
@@ -21,5 +21,11 @@ public class SeizuresDisability extends Disability {
 		player.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 240, 0, true, false, false));
 		player.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 120, 5, true, false, false));
 		if (Boolean.getBoolean("disabilitystack.selftest")) DisabilityMod.LOGGER.info("[selftest] seizures fired");
+	}
+
+	@Override
+	public void onRemove(ServerPlayer player) {
+		player.removeEffect(MobEffects.NAUSEA);
+		player.removeEffect(MobEffects.SLOWNESS);
 	}
 }

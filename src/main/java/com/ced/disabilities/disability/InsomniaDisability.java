@@ -10,7 +10,7 @@ import java.util.List;
 /** Beds refuse to let you sleep. The check lives in an event, so tick() does nothing. */
 public class InsomniaDisability extends Disability {
 	public InsomniaDisability() {
-		super("insomnia", "Insomnia", "You cannot sleep");
+		super("insomnia", "Insomnia", "Chronic inability to sleep");
 	}
 
 	public static void registerEvents() {

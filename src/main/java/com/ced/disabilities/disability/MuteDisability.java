@@ -17,7 +17,7 @@ import java.util.List;
 /** Chat messages from the player are swallowed. Handled by an event. */
 public class MuteDisability extends Disability {
 	public MuteDisability() {
-		super("mute", "Mute", "You cannot speak in chat");
+		super("mute", "Mute", "Loss of speech: you cannot speak in chat");
 	}
 
 	private static boolean muted(net.minecraft.world.entity.Entity e) {

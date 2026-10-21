@@ -14,7 +14,7 @@ public class DyslexiaDisability extends Disability {
 	private static final Random RANDOM = new Random();
 
 	public DyslexiaDisability() {
-		super("dyslexia", "Dyslexia", "Letters in your chat messages get scrambled");
+		super("dyslexia", "Dyslexia", "Reading difficulty: letters in your chat messages get scrambled");
 	}
 
 	static String scramble(String text) {
