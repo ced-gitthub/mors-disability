@@ -3,6 +3,6 @@
 	"minVersion": "0.8",
 	"package": "com.ced.disabilities.client.mixin",
 	"compatibilityLevel": "JAVA_21",
-	"client": ["PlayerModelMixin"],
+	"client": ["PlayerModelMixin", "EntityRenderDispatcherMixin"],
 	"injectors": {"defaultRequire": 1}
 }

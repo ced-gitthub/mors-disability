@@ -172,6 +172,7 @@ public class DisabilityClient implements ClientModInitializer {
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			while (toggle.consumeClick()) showList = !showList;
 			tickEffects(client);
+			Hallucination.tick(client);
 		});
 		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> restoreVolume(client));
 		ClientLifecycleEvents.CLIENT_STOPPING.register(DisabilityClient::restoreVolume);
