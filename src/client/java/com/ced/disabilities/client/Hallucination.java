@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Schizophrenia: about half the nearby mobs and players are drawn as a different mob of the same kind
+ * Schizophrenia: about one in five nearby mobs and players are drawn as a different mob of the same kind
  * (ground, sea or air). The choice is made once per mob and kept until the disability ends or you rejoin.
  */
 public final class Hallucination {
@@ -32,6 +32,8 @@ public final class Hallucination {
 	private static final List<EntityType<?>> AIR = List.of(EntityTypes.BAT, EntityTypes.PARROT, EntityTypes.BEE,
 			EntityTypes.PHANTOM, EntityTypes.VEX, EntityTypes.ALLAY, EntityTypes.GHAST, EntityTypes.BLAZE);
 	private static final Random RANDOM = new Random();
+	/** Chance that a given mob is drawn as something else; the rest stay as they are. */
+	private static final int SWAP_PERCENT = 20;
 
 	private record Fake(EntityType<?> type, LivingEntity entity) {}
 
@@ -68,7 +70,7 @@ public final class Hallucination {
 		if (f == null) {
 			List<EntityType<?>> pool = poolFor(real);
 			EntityType<?> t = pool.get(RANDOM.nextInt(pool.size()));
-			if (RANDOM.nextBoolean() || t == real.getType() || !(t.create(mc.level, EntitySpawnReason.LOAD) instanceof LivingEntity le)) {
+			if (RANDOM.nextInt(100) >= SWAP_PERCENT || t == real.getType() || !(t.create(mc.level, EntitySpawnReason.LOAD) instanceof LivingEntity le)) {
 				UNCHANGED.add(id);
 				return null;
 			}
