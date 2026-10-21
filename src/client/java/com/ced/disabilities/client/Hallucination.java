@@ -13,18 +13,31 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 import java.util.List;
 import java.util.Map;
 
-/** Schizophrenia: nearby mobs and players are drawn as other ground mobs (villager <-> zombie, players too). */
+/**
+ * Schizophrenia: about half the nearby mobs and players are drawn as a different mob of the same kind
+ * (ground, sea or air). The choice is made once per mob and kept until the disability ends or you rejoin.
+ */
 public final class Hallucination {
-	private static final List<EntityType<?>> POOL = List.of(EntityTypes.ZOMBIE, EntityTypes.SKELETON, EntityTypes.CREEPER,
+	private static final List<EntityType<?>> GROUND = List.of(EntityTypes.ZOMBIE, EntityTypes.SKELETON, EntityTypes.CREEPER,
 			EntityTypes.VILLAGER, EntityTypes.SPIDER, EntityTypes.PIG, EntityTypes.COW, EntityTypes.SHEEP, EntityTypes.WITCH,
 			EntityTypes.ENDERMAN, EntityTypes.PILLAGER, EntityTypes.ZOMBIFIED_PIGLIN);
+	private static final List<EntityType<?>> SEA = List.of(EntityTypes.SQUID, EntityTypes.GLOW_SQUID, EntityTypes.COD,
+			EntityTypes.SALMON, EntityTypes.TROPICAL_FISH, EntityTypes.PUFFERFISH, EntityTypes.DOLPHIN, EntityTypes.GUARDIAN);
+	private static final List<EntityType<?>> AIR = List.of(EntityTypes.BAT, EntityTypes.PARROT, EntityTypes.BEE,
+			EntityTypes.PHANTOM, EntityTypes.VEX, EntityTypes.ALLAY, EntityTypes.GHAST, EntityTypes.BLAZE);
+	private static final Random RANDOM = new Random();
 
 	private record Fake(EntityType<?> type, LivingEntity entity) {}
 
 	private static final Map<Integer, Fake> FAKES = new HashMap<>();
+	/** Mobs rolled to stay as they really are. */
+	private static final Set<Integer> UNCHANGED = new HashSet<>();
 
 	private Hallucination() {}
 
@@ -37,12 +50,10 @@ public final class Hallucination {
 		return false;
 	}
 
-	private static EntityType<?> target(Entity real, long epoch) {
-		int h = Integer.rotateLeft(real.getId() * 0x9E3779B1 + (int) epoch * 0x85EBCA6B, 13) * 0xC2B2AE35;
-		h ^= h >>> 15;
-		if (Math.floorMod(h, 4) == 0) return null;
-		EntityType<?> t = POOL.get(Math.floorMod(h >>> 3, POOL.size()));
-		return t == real.getType() ? null : t;
+	private static List<EntityType<?>> poolFor(Entity real) {
+		if (SEA.contains(real.getType())) return SEA;
+		if (AIR.contains(real.getType())) return AIR;
+		return GROUND;
 	}
 
 	/** The stand-in to draw instead of {@code real}, or null to draw it normally. */
@@ -51,14 +62,19 @@ public final class Hallucination {
 		if (mc.level == null || real == mc.player || !(real instanceof LivingEntity living) || real instanceof ArmorStand || isFake(real)) return null;
 		if (!(real instanceof Player) && !(real instanceof Mob)) return null;
 		if (!active(mc)) return null;
-		EntityType<?> t = target(real, (mc.level.getGameTime() + real.getId() * 97L) / 200);
-		if (t == null) return null;
-		Fake f = FAKES.get(real.getId());
-		if (f == null || f.type != t) {
-			if (!(t.create(mc.level, EntitySpawnReason.LOAD) instanceof LivingEntity le)) return null;
-			le.setId(-1_000_000 - real.getId());
-				f = new Fake(t, le);
-			FAKES.put(real.getId(), f);
+		int id = real.getId();
+		if (UNCHANGED.contains(id)) return null;
+		Fake f = FAKES.get(id);
+		if (f == null) {
+			List<EntityType<?>> pool = poolFor(real);
+			EntityType<?> t = pool.get(RANDOM.nextInt(pool.size()));
+			if (RANDOM.nextBoolean() || t == real.getType() || !(t.create(mc.level, EntitySpawnReason.LOAD) instanceof LivingEntity le)) {
+				UNCHANGED.add(id);
+				return null;
+			}
+			le.setId(-1_000_000 - id);
+			f = new Fake(t, le);
+			FAKES.put(id, f);
 			if (Boolean.getBoolean("disabilitystack.selftest")) DisabilityMod.LOGGER.info("[selftest] hallucinate {} -> {}", real.getType().toShortString(), t.toShortString());
 		}
 		sync(living, f.entity);
@@ -82,8 +98,9 @@ public final class Hallucination {
 
 	/** Drops stand-ins for entities that are gone, or all of them when the effect is not active. */
 	public static void tick(Minecraft mc) {
-		if (FAKES.isEmpty()) return;
-		if (mc.level == null || !active(mc)) { FAKES.clear(); return; }
+		if (FAKES.isEmpty() && UNCHANGED.isEmpty()) return;
+		if (mc.level == null || !active(mc)) { FAKES.clear(); UNCHANGED.clear(); return; }
 		FAKES.keySet().removeIf(id -> mc.level.getEntity(id) == null);
+		UNCHANGED.removeIf(id -> mc.level.getEntity(id) == null);
 	}
 }
