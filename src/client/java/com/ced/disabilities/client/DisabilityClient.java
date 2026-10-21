@@ -55,6 +55,7 @@ public class DisabilityClient implements ClientModInitializer {
 			case "cam" -> mc.options.setCameraType(a[1].equals("3") ? net.minecraft.client.CameraType.THIRD_PERSON_BACK : net.minecraft.client.CameraType.FIRST_PERSON);
 			case "shot" -> net.minecraft.client.Screenshot.grab(mc, false);
 			case "respawn" -> mc.player.respawn();
+			case "drop" -> mc.player.drop(false);
 			case "setvol" -> mc.options.getSoundSourceOptionInstance(net.minecraft.sounds.SoundSource.MASTER).set(Double.parseDouble(a[1]));
 			case "keyuse" -> mc.options.keyUse.setDown(a[1].equals("on"));
 			case "use" -> mc.gameMode.useItem(mc.player, a[1].equals("off")
