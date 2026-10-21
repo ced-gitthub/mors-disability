@@ -41,8 +41,6 @@ public final class Hallucination {
 		int h = Integer.rotateLeft(real.getId() * 0x9E3779B1 + (int) epoch * 0x85EBCA6B, 13) * 0xC2B2AE35;
 		h ^= h >>> 15;
 		if (Math.floorMod(h, 4) == 0) return null;
-		if (real.getType() == EntityTypes.VILLAGER) return EntityTypes.ZOMBIE;
-		if (real.getType() == EntityTypes.ZOMBIE) return EntityTypes.VILLAGER;
 		EntityType<?> t = POOL.get(Math.floorMod(h >>> 3, POOL.size()));
 		return t == real.getType() ? null : t;
 	}
@@ -53,7 +51,7 @@ public final class Hallucination {
 		if (mc.level == null || real == mc.player || !(real instanceof LivingEntity living) || real instanceof ArmorStand || isFake(real)) return null;
 		if (!(real instanceof Player) && !(real instanceof Mob)) return null;
 		if (!active(mc)) return null;
-		EntityType<?> t = target(real, mc.level.getGameTime() / 600);
+		EntityType<?> t = target(real, (mc.level.getGameTime() + real.getId() * 97L) / 200);
 		if (t == null) return null;
 		Fake f = FAKES.get(real.getId());
 		if (f == null || f.type != t) {
