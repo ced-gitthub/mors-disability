@@ -6,7 +6,9 @@ Summary: 30 real-life disabilities that rotate on a timer, with a HUD list, OP c
 Categories: Game Mechanics, Adventure
 Loader: Fabric. Game version: 26.2. Client and server: required on both.
 Dependency: Fabric API (required).
-License: see LICENSE
+License: MIT
+
+Credits: inspired by the [Disabilities](https://modrinth.com/mod/disabilities) mod by OddSense. Mors Disability is an independent implementation with no code or assets copied from it.
 
 ## Description
 Players get random disabilities (ADHD, asthma, blindness, dementia, Parkinson's, cancer and more), each with a real-life inspired effect. Severity sets how long each lasts (mild 10 min, moderate 5, severe 3); when all expire they are replaced by new ones. Press H for the HUD list. OP commands: /disability give|remove|reset|list|next|reload|timer. Config: config/mors-disability.json. Players without the mod are refused at login.
