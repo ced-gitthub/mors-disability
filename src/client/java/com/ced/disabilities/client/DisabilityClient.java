@@ -260,7 +260,9 @@ public class DisabilityClient implements ClientModInitializer {
 		}
 		w += 10;
 		int headH = 14;
-		int h = headH + 2 + (collapsed ? 0 : owned.size() * ROW_H) + 2;
+		Integer nextLeft = owned.isEmpty() ? view.get("_next") : null;
+		if (nextLeft != null && !collapsed) w = Math.max(w, font.width("Next disability 00:00") + 10);
+		int h = headH + 2 + (collapsed ? 0 : Math.max(owned.size(), nextLeft != null ? 1 : 0) * ROW_H) + 2;
 
 		boolean cursorFree = mc.gui.screen() != null;
 		int mx = cursorFree ? (int) mc.mouseHandler.getScaledXPos(mc.getWindow()) : -1;
@@ -276,6 +278,12 @@ public class DisabilityClient implements ClientModInitializer {
 
 		Disability hovered = null;
 		int ry = y + headH + 2;
+		if (nextLeft != null) {
+			int secs = Math.max(0, nextLeft - (int) (mc.player.tickCount - viewAt)) / 20;
+			String t = String.format("%d:%02d", secs / 60, secs % 60);
+			g.text(font, "Next disability", x + 5, ry + 2, 0xFFFFFFFF, true);
+			g.text(font, t, x + w - 5 - font.width(t), ry + 2, 0xFF9090B0, true);
+		}
 		for (String id : owned) {
 			Disability d = Disabilities.get(id);
 			boolean over = mx >= x && mx < x + w && my >= ry && my < ry + ROW_H;
