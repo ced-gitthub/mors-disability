@@ -21,6 +21,7 @@ public class TouretteDisability extends Disability {
 	public void tick(ServerPlayer player) {
 		if (RANDOM.nextInt(odds(900)) != 0) return;
 		if (Boolean.getBoolean("disabilitystack.selftest")) com.ced.disabilities.DisabilityMod.LOGGER.info("[selftest] tourette fired motion={}", player.getDeltaMovement());
+		if (net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("voicechat")) com.ced.disabilities.voice.VoiceFx.tic(player);
 		SoundEvent noise = NOISES.get(RANDOM.nextInt(NOISES.size()));
 		player.level().playSound(null, player.getX(), player.getY(), player.getZ(), noise, SoundSource.PLAYERS, 1.0f, 1.0f);
 		if (player.onGround()) {
