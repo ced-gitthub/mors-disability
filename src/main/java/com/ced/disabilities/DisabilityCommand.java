@@ -43,15 +43,7 @@ public final class DisabilityCommand {
 						.then(Commands.argument("targets", EntityArgument.players())
 								.executes(ctx -> reset(ctx, EntityArgument.getPlayers(ctx, "targets")))))
 				.then(Commands.literal("reload").executes(DisabilityCommand::reload))
-				.then(Commands.literal("timer")
-						.then(Commands.literal("off").executes(ctx -> timer(ctx, 0)))
-						.then(Commands.argument("severity", StringArgumentType.word()).suggests((c, b) -> SharedSuggestionProvider.suggest(Disabilities.SEVERITIES, b))
-								.then(Commands.literal("off").executes(ctx -> severityTimer(ctx, 0)))
-								.then(Commands.argument("minutes", DoubleArgumentType.doubleArg(0.05))
-										.executes(ctx -> severityTimer(ctx, DoubleArgumentType.getDouble(ctx, "minutes")))))
-						.then(Commands.literal("shared").executes(ctx -> sharedTimer(ctx)))
-						.then(Commands.argument("minutes", DoubleArgumentType.doubleArg(0.05))
-								.executes(ctx -> timer(ctx, DoubleArgumentType.getDouble(ctx, "minutes")))))
+				.then(timerNode())
 				.then(Commands.literal("mode")
 						.then(Commands.literal("stack").executes(ctx -> mode(ctx, "stack")))
 						.then(Commands.literal("replace").executes(ctx -> mode(ctx, "replace")))));
@@ -114,16 +106,29 @@ public final class DisabilityCommand {
 		return 1;
 	}
 
+	private static com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> timerNode() {
+		var node = Commands.literal("timer").then(Commands.literal("off").executes(ctx -> timer(ctx, 0)));
+		for (String sev : Disabilities.SEVERITIES) {
+			node.then(Commands.literal(sev)
+					.then(Commands.literal("off").executes(ctx -> severityTimer(ctx, sev, 0)))
+					.then(Commands.argument("minutes", DoubleArgumentType.doubleArg(0.05))
+							.executes(ctx -> severityTimer(ctx, sev, DoubleArgumentType.getDouble(ctx, "minutes")))));
+		}
+		return node.then(Commands.literal("shared").executes(ctx -> sharedTimer(ctx)))
+				.then(Commands.argument("minutes", DoubleArgumentType.doubleArg(0.05))
+						.executes(ctx -> timer(ctx, DoubleArgumentType.getDouble(ctx, "minutes"))));
+	}
+
 	private static int timer(CommandContext<CommandSourceStack> ctx, double minutes) {
 		DisabilityConfig.get().intervalMinutes = minutes;
+		DisabilityConfig.get().severityMinutes.clear();
 		DisabilityConfig.save();
 		ctx.getSource().sendSuccess(() -> Component.literal(minutes <= 0 ? "Timer off"
 				: "Timer set to " + minutes + " min (saved to config)"), true);
 		return 1;
 	}
 
-	private static int severityTimer(CommandContext<CommandSourceStack> ctx, double minutes) {
-		String s = StringArgumentType.getString(ctx, "severity");
+	private static int severityTimer(CommandContext<CommandSourceStack> ctx, String s, double minutes) {
 		if (!Disabilities.SEVERITIES.contains(s)) {
 			ctx.getSource().sendFailure(Component.literal("Severity must be one of " + Disabilities.SEVERITIES));
 			return 0;

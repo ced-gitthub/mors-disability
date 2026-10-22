@@ -102,7 +102,7 @@ public final class DisabilityManager {
 
 	private static final String NEXT = "_next";
 
-	private static int cfg0() { return DisabilityConfig.get().intervalTicks(); }
+	private static int cfg0() { return DisabilityConfig.get().bootstrapTicks(); }
 
 	private static void setTimer(ServerPlayer player, String id, Integer ticks) {
 		java.util.Map<String, Integer> m = new java.util.HashMap<>(entry(player).timers);
@@ -125,10 +125,12 @@ public final class DisabilityManager {
 	private static void expireAll(ServerPlayer player, List<String> ids) {
 		DisabilityConfig cfg = DisabilityConfig.get();
 		List<String> exclude = new ArrayList<>(owned(player));
+		boolean stack = "stack".equals(cfg.mode);
 		for (String id : ids) {
 			Disability old = Disabilities.get(id);
-			if (old != null) remove(player, old);
+			if (old != null && !stack) remove(player, old);
 		}
+		if (stack) resetTimers(player);
 		double roll = java.util.concurrent.ThreadLocalRandom.current().nextDouble();
 		int count = roll < cfg.chanceThree ? 3 : roll < cfg.chanceThree + cfg.chanceTwo ? 2 : 1;
 		for (int i = 0; i < count; i++) {

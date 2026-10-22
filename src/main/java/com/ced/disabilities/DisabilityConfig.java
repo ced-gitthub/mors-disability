@@ -40,6 +40,16 @@ public class DisabilityConfig {
 		return intervalMinutes <= 0 ? 0 : (int) Math.min(20 * 60 * 60 * 24 * 30L, Math.max(20, Math.round(intervalMinutes * 60 * 20)));
 	}
 
+	public int bootstrapTicks() {
+		int t = intervalTicks();
+		if (t > 0) return t;
+		for (double m : severityMinutes.values()) {
+			int v = toTicks(m);
+			if (v > 0 && (t == 0 || v < t)) t = v;
+		}
+		return t;
+	}
+
 	public static void load() {
 		boolean writeBack = true;
 		try {
