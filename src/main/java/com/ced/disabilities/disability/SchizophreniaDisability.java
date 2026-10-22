@@ -20,6 +20,9 @@ public class SchizophreniaDisability extends Disability {
 
 	@Override
 	public void tick(ServerPlayer player) {
+		if (net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("voicechat") && RANDOM.nextInt(odds(1500)) == 0) {
+			com.ced.disabilities.voice.VoiceFx.whisper(player);
+		}
 		if (RANDOM.nextInt(odds(600)) != 0) return;
 		SoundEvent s = SOUNDS[RANDOM.nextInt(SOUNDS.length)];
 		player.connection.send(new net.minecraft.network.protocol.game.ClientboundSoundPacket(

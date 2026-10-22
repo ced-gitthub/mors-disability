@@ -13,7 +13,11 @@
 	"mixins": [{"config": "mors-disability.client.mixins.json", "environment": "client"}],
 	"entrypoints": {
 		"main": ["com.ced.disabilities.DisabilityMod"],
-		"client": ["com.ced.disabilities.client.DisabilityClient"]
+		"client": ["com.ced.disabilities.client.DisabilityClient"],
+		"voicechat": ["com.ced.disabilities.voice.VoicechatIntegration"]
+	},
+	"suggests": {
+		"voicechat": "*"
 	},
 	"depends": {
 		"fabricloader": ">=0.19.5",
