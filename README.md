@@ -8,5 +8,8 @@ Fabric mod for Minecraft 26.2. Players gain real-life inspired disabilities on a
 Inspired by the **Disabilities** mod: https://modrinth.com/mod/disabilities
 Thank you to its author, OddSense (MIT-licensed) for the idea. Mors Disability is an independent, clean-room implementation: it contains no code, textures or other assets from that mod.
 
+## Support
+If you enjoy the mod, you can support development on Ko-fi: https://ko-fi.com/morsvald
+
 ## License
 MIT, see LICENSE.
