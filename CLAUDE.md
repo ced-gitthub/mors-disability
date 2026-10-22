@@ -14,7 +14,7 @@
 - Keep `run/config/mors-disability.json` at the default (`intervalMinutes` 10) when finished, and stop all test java processes.
 
 ## Test client audio
-Before every dev client launch, set `soundCategory_music:0.0` (and keep master 1.0) in `run/options.txt` so no music plays while testing (user request).
+Before every dev client launch, set `soundCategory_music:0.0` and master `0.01` in `run/options.txt` so no music plays while testing (user request).
 
 ## Checkpoint every change
 - After ANY change, however small, make a git commit (checkpoint) before moving on: `git add -A && git commit -m "<what changed>"`.
