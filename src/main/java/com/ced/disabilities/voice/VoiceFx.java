@@ -46,7 +46,7 @@ public final class VoiceFx {
 		VoicechatConnection c = s.getConnectionOf(p.getUUID());
 		if (SELFTEST) DisabilityMod.LOGGER.info("[selftest] voice connection={} connected={} disabled={}", c != null,
 				c != null && c.isConnected(), c != null && c.isDisabled());
-		return c != null && c.isConnected() && !c.isDisabled();
+		return c != null && c.isConnected() && (SELFTEST || !c.isDisabled());
 	}
 
 	/** Schizophrenia: a breathy voice nobody else can hear, a few blocks away, only for this player. */
