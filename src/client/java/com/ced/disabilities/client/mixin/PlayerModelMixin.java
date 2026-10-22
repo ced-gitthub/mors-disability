@@ -17,13 +17,17 @@ public abstract class PlayerModelMixin {
 	@Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At("TAIL"))
 	private void mors$hideOffhandArm(LivingEntity e, float a, float b, float c, float d, float f, CallbackInfo ci) {
 		PlayerModel<?> self = (PlayerModel<?>) (Object) this;
-		if (DisabilityManager.ownedOf(e).contains("amputated_offhand")) {
-			self.leftArm.visible = false;
-			self.leftSleeve.visible = false;
+		boolean arm = DisabilityManager.ownedOf(e).contains("amputated_offhand");
+		boolean leg = DisabilityManager.ownedOf(e).contains("amputated_leg");
+		if (arm || leg) {
+			if (arm) { self.leftArm.visible = false; self.leftSleeve.visible = false; }
+			if (leg) { self.leftLeg.visible = false; self.leftPants.visible = false; }
 			HIDDEN.add(self);
 		} else if (HIDDEN.remove(self)) {
 			self.leftArm.visible = true;
 			self.leftSleeve.visible = true;
+			self.leftLeg.visible = true;
+			self.leftPants.visible = true;
 		}
 	}
 }
