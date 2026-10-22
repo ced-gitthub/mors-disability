@@ -29,6 +29,7 @@ public final class DisabilityCommand {
 	public static void register(CommandDispatcher<CommandSourceStack> d) {
 		d.register(Commands.literal("disability")
 				.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+				.then(Commands.literal("voicetest").executes(ctx -> voiceTest(ctx)))
 				.then(Commands.literal("give").then(Commands.argument("targets", EntityArgument.players())
 						.then(Commands.argument("id", StringArgumentType.word()).suggests(IDS).executes(ctx -> give(ctx)))))
 				.then(Commands.literal("remove").then(Commands.argument("targets", EntityArgument.players())
@@ -47,6 +48,17 @@ public final class DisabilityCommand {
 				.then(Commands.literal("mode")
 						.then(Commands.literal("stack").executes(ctx -> mode(ctx, "stack")))
 						.then(Commands.literal("replace").executes(ctx -> mode(ctx, "replace")))));
+	}
+
+	/** Dev-only (selftest flag): exercises the Simple Voice Chat hooks for the caller. */
+	private static int voiceTest(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+		if (!Boolean.getBoolean("disabilitystack.selftest")
+				|| !net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("voicechat")) return 0;
+		ServerPlayer p = ctx.getSource().getPlayerOrException();
+		com.ced.disabilities.voice.VoicechatIntegration.selfTest(p);
+		com.ced.disabilities.voice.VoiceFx.whisper(p);
+		com.ced.disabilities.voice.VoiceFx.tic(p);
+		return 1;
 	}
 
 	private static int give(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
