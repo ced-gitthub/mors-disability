@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.client.mixin;
 
 import com.ced.disabilities.client.Hallucination;
@@ -9,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-/** Schizophrenia: draw nearby mobs and players as a different ground mob. */
 @Mixin(EntityRenderDispatcher.class)
 public abstract class EntityRenderDispatcherMixin {
 	@Inject(method = "extractEntity", at = @At("HEAD"), cancellable = true)

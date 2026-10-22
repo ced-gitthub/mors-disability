@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities;
 
 import com.ced.disabilities.disability.Disabilities;
@@ -14,7 +15,6 @@ import net.minecraft.server.level.ServerPlayer;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Per-player state lives in Fabric data attachments: OWNED is saved and synced to the client, TIMERS is saved only. */
 public final class DisabilityManager {
 	public static final AttachmentType<List<String>> OWNED = AttachmentRegistry.<List<String>>builder()
 			.persistent(Codec.STRING.listOf())
@@ -23,19 +23,16 @@ public final class DisabilityManager {
 			.syncWith(ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list()), AttachmentSyncPredicate.targetOnly())
 			.buildAndRegister(Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "owned"));
 
-	/** Ticks left on each of this player's timers, keyed by severity ("all" when one shared timer is used). */
 	public static final AttachmentType<java.util.Map<String, Integer>> TIMERS = AttachmentRegistry.<java.util.Map<String, Integer>>builder()
 			.persistent(Codec.unboundedMap(Codec.STRING, Codec.INT))
 			.copyOnDeath()
 			.buildAndRegister(Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "timers"));
 
-	/** Ticks until the next disability as last sent to the client, -1 when the timer is off. */
 	public static final AttachmentType<Integer> COUNTDOWN = AttachmentRegistry.<Integer>builder()
 			.initializer(() -> -1)
 			.syncWith(ByteBufCodecs.VAR_INT, AttachmentSyncPredicate.targetOnly())
 			.buildAndRegister(Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "countdown"));
 
-	/** Ticks left per severity timer as last sent to the client (about once a second). */
 	public static final AttachmentType<java.util.Map<String, Integer>> TIMER_VIEW = AttachmentRegistry.<java.util.Map<String, Integer>>builder()
 			.initializer(java.util.Map::of)
 			.syncWith(ByteBufCodecs.map(java.util.HashMap::new, ByteBufCodecs.STRING_UTF8, ByteBufCodecs.VAR_INT), AttachmentSyncPredicate.targetOnly())
@@ -45,7 +42,7 @@ public final class DisabilityManager {
 	}
 
 	public static void init() {
-		// forces class load so the attachments register
+
 	}
 
 	public static List<String> owned(ServerPlayer player) {
@@ -85,21 +82,18 @@ public final class DisabilityManager {
 		resetTimers(player);
 	}
 
-	/** Adds one random new disability on top of what the player already has. */
 	public static Disability giveRandom(ServerPlayer player) {
 		Disability d = Disabilities.pickRandom(owned(player));
 		if (d != null) give(player, d);
 		return d;
 	}
 
-	/** How long one disability lasts, in ticks (0 = never ends); from its severity's timer, or the shared one. */
 	private static int lengthFor(String id) {
 		DisabilityConfig cfg = DisabilityConfig.get();
 		if (cfg.severityMinutes.isEmpty()) return cfg.intervalTicks();
 		return DisabilityConfig.toTicks(cfg.severityMinutes.getOrDefault(Disabilities.severity(id), cfg.intervalMinutes));
 	}
 
-	/** Timer key used while the player has no timed disability: when it runs out they get a new one. */
 	private static final String NEXT = "_next";
 
 	private static int cfg0() { return DisabilityConfig.get().intervalTicks(); }
@@ -110,7 +104,6 @@ public final class DisabilityManager {
 		player.setAttached(TIMERS, m);
 	}
 
-	/** Restarts the timer of every disability this player owns at its full length. */
 	public static void resetTimers(ServerPlayer player) {
 		java.util.Map<String, Integer> fresh = new java.util.HashMap<>();
 		for (String id : owned(player)) {
@@ -120,7 +113,6 @@ public final class DisabilityManager {
 		player.setAttached(TIMERS, fresh);
 	}
 
-	/** Every timed disability has run out: they all go together, replaced by 1 new one (sometimes 2, rarely 3). */
 	private static void expireAll(ServerPlayer player, List<String> ids) {
 		DisabilityConfig cfg = DisabilityConfig.get();
 		List<String> exclude = new ArrayList<>(owned(player));
@@ -166,7 +158,7 @@ public final class DisabilityManager {
 		if (bootstrap) expireAll(player, List.of());
 		boolean allDone = bootstrap || (timed > 0 && expired.size() == timed);
 		if (allDone && !bootstrap) expireAll(player, expired);
-		// Synced about once a second; the client counts down locally in between.
+
 		if (player.tickCount % 20 == 0 || allDone) {
 			player.setAttached(TIMER_VIEW, new java.util.HashMap<>(player.getAttachedOrElse(TIMERS, java.util.Map.of())));
 		}

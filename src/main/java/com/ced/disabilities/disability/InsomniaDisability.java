@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import com.ced.disabilities.DisabilityManager;
@@ -7,7 +8,6 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.List;
 
-/** Beds refuse to let you sleep. The check lives in an event, so tick() does nothing. */
 public class InsomniaDisability extends Disability {
 	public InsomniaDisability() {
 		super("insomnia", "Insomnia", "Chronic inability to sleep");

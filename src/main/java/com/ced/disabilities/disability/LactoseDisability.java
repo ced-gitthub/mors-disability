@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -8,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-/** Finishing a bucket of milk starts a five second slow death; only a golden apple cures it. */
 public class LactoseDisability extends Disability {
 	private static final int DEATH_TICKS = 100;
 	private final Map<UUID, Integer> dying = new HashMap<>();

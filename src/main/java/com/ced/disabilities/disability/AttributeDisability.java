@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import com.ced.disabilities.DisabilityMod;
@@ -8,7 +9,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
-/** A disability that is just a permanent attribute modifier. */
 public class AttributeDisability extends Disability {
 	private final Holder<Attribute> attribute;
 	private final double amount;
@@ -26,7 +26,7 @@ public class AttributeDisability extends Disability {
 
 	@Override
 	public void tick(ServerPlayer player) {
-		// Transient modifiers are lost on respawn/relog, so re-apply whenever missing.
+
 		AttributeInstance instance = player.getAttribute(attribute);
 		if (instance != null && !instance.hasModifier(modifierId)) {
 			instance.addTransientModifier(new AttributeModifier(modifierId, amount, operation));

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import net.minecraft.server.level.ServerPlayer;

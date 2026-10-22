@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -5,7 +6,6 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.Random;
 
-/** Random stumbles shove you sideways. */
 public class CerebralPalsyDisability extends Disability {
 	private static final Random RANDOM = new Random();
 

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import com.ced.disabilities.DisabilityMod;
@@ -10,7 +11,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-/** Compulsively re-sorts the main inventory. */
 public class OcdDisability extends Disability {
 	private static final Random RANDOM = new Random();
 

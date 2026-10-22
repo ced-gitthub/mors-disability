@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import net.minecraft.network.chat.Component;
@@ -7,7 +8,6 @@ import net.minecraft.world.effect.MobEffects;
 
 import java.util.Random;
 
-/** Now and then you fall asleep for five seconds. */
 public class NarcolepsyDisability extends Disability {
 	private static final Random RANDOM = new Random();
 

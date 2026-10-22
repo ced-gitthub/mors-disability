@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import com.ced.disabilities.DisabilityManager;
@@ -9,7 +10,6 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.List;
 
-/** The offhand can neither use items nor interact with blocks. Handled by events. */
 public class AmputatedOffhandDisability extends Disability {
 	public AmputatedOffhandDisability() {
 		super("amputated_offhand", "Amputated Offhand", "Loss of a hand or arm: the offhand is gone");

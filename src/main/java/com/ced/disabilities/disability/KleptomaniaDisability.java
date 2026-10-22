@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -5,7 +6,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 
-/** Anything the player throws on the ground is snatched straight back. */
 public class KleptomaniaDisability extends Disability {
 	public KleptomaniaDisability() {
 		super("kleptomania", "Kleptomania", "Compulsive need to hold on: you cannot drop items");

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import com.ced.disabilities.DisabilityMod;
@@ -6,7 +7,6 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Random;
 
-/** Impulsive behaviour you do not control: every few seconds you jump, switch hotbar slot, drop your item or twitch your head. */
 public class AdhdDisability extends Disability {
 	private static final Random RANDOM = new Random();
 

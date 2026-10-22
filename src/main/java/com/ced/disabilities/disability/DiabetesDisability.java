@@ -1,10 +1,10 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 
-/** Blood sugar that swings: hunger drains fast, and low blood sugar (hypoglycaemia) brings weakness and slowness. */
 public class DiabetesDisability extends Disability {
 	private static final int LOW_FOOD = 6;
 

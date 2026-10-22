@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import com.ced.disabilities.DisabilityMod;
@@ -7,7 +8,6 @@ import net.minecraft.world.effect.MobEffects;
 
 import java.util.Random;
 
-/** Random seizures: heavy nausea and near-immobility for a few seconds. */
 public class SeizuresDisability extends Disability {
 	private static final Random RANDOM = new Random();
 

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import net.minecraft.core.BlockPos;
@@ -6,7 +7,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 
-/** Standing near flowers poisons you. */
 public class PollenDisability extends Disability {
 	private static final int RADIUS = 3;
 

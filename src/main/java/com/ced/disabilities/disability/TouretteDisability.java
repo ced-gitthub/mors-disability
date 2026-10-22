@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -8,7 +9,6 @@ import net.minecraft.sounds.SoundSource;
 import java.util.List;
 import java.util.Random;
 
-/** Random involuntary noises and little hops. */
 public class TouretteDisability extends Disability {
 	private static final Random RANDOM = new Random();
 	private static final List<SoundEvent> NOISES = List.of(SoundEvents.ZOMBIE_AMBIENT, SoundEvents.VILLAGER_NO);

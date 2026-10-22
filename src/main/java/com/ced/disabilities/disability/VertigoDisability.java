@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import com.ced.disabilities.DisabilityMod;
@@ -6,7 +7,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 
-/** Standing with a long drop beneath you makes you dizzy and sluggish. */
 public class VertigoDisability extends Disability {
 	public VertigoDisability() {
 		super("vertigo", "Vertigo", "Dizziness and loss of balance at heights");

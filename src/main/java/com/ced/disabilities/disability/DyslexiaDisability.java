@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import com.ced.disabilities.DisabilityManager;
@@ -9,7 +10,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-/** The letters inside every word of the player's chat messages get scrambled. */
 public class DyslexiaDisability extends Disability {
 	private static final Random RANDOM = new Random();
 

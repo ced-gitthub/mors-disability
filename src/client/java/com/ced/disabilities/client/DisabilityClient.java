@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.client;
 
 import com.ced.disabilities.DisabilityManager;
@@ -26,10 +27,9 @@ public class DisabilityClient implements ClientModInitializer {
 	private static boolean showList = true;
 
 	private static final java.util.Random RANDOM = new java.util.Random();
-	/** Master volume saved while Deaf is active, or null when we have not touched it. */
+
 	private static Double savedVolume;
 
-	/** Dev-only: with -Ddisabilitystack.selftest=true, run one command per file drop in run/selftest.cmd. */
 	private static void selftest(Minecraft mc) {
 		if (!Boolean.getBoolean("disabilitystack.selftest") || mc.player == null) return;
 		java.nio.file.Path f = java.nio.file.Path.of("selftest.cmd");
@@ -103,7 +103,6 @@ public class DisabilityClient implements ClientModInitializer {
 
 	private static int tremorLeft, tremorWait = 400;
 
-	/** Parkinson's: a constant light resting tremor, with sudden violent shaking episodes every so often. */
 	private static void tremor(Minecraft mc, boolean on) {
 		if (!on || mc.player == null || mc.gui.screen() != null || !mc.player.isAlive()) { tremorLeft = 0; return; }
 		if (tremorLeft > 0) {
@@ -119,7 +118,6 @@ public class DisabilityClient implements ClientModInitializer {
 	private static final String FACE_TEAM = "dsfaceblind";
 	private static int hiddenNames;
 
-	/** Prosopagnosia: puts every other player into a client-only team whose name tags are never shown. */
 	private static void hideNameTags(Minecraft mc, boolean on) {
 		if (mc.level == null || mc.getConnection() == null) return;
 		var sb = mc.level.getScoreboard();
@@ -166,7 +164,6 @@ public class DisabilityClient implements ClientModInitializer {
 		try { java.nio.file.Files.writeString(VOLUME_FILE, Double.toString(v)); } catch (java.io.IOException ignored) { }
 	}
 
-	/** A crash while Deaf left the volume at 0; put it back on next launch. */
 	private static void recoverVolume(Minecraft mc) {
 		try {
 			if (!java.nio.file.Files.exists(VOLUME_FILE)) return;
@@ -203,7 +200,6 @@ public class DisabilityClient implements ClientModInitializer {
 				Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "list"), (graphics, tickCounter) -> drawHud(graphics));
 	}
 
-	// Countdown: the server syncs about once a second, we interpolate in between.
 	private static long clientTick;
 	private static int lastSynced = -1;
 	private static long lastSyncedAt;

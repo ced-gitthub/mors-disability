@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import com.ced.disabilities.DisabilityMod;
@@ -9,10 +10,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
-/**
- * Like real cancer: constant fatigue and weakness (permanent Weakness), a body that wastes away (max health
- * shrinks every minute, down to one heart) and now and then a wave of treatment-like nausea.
- */
 public class CancerDisability extends Disability {
 	private static final Identifier MODIFIER = Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "cancer");
 	private static final int INTERVAL_TICKS = 1200;

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import com.ced.disabilities.DisabilityManager;
@@ -14,7 +15,6 @@ import net.minecraft.network.chat.Component;
 
 import java.util.List;
 
-/** Chat messages from the player are swallowed. Handled by an event. */
 public class MuteDisability extends Disability {
 	public MuteDisability() {
 		super("mute", "Mute", "Loss of speech: you cannot speak in chat");
@@ -26,7 +26,6 @@ public class MuteDisability extends Disability {
 
 	private static final String[] SPEECH_COMMANDS = {"say", "me", "msg", "tell", "w", "teammsg", "tm"};
 
-	/** Re-roots each vanilla speech command behind a redirect that throws for muted players. */
 	@SuppressWarnings("unchecked")
 	public static void guardCommands(CommandDispatcher<CommandSourceStack> d) {
 		SimpleCommandExceptionType mutedError = new SimpleCommandExceptionType(Component.literal("You can't speak."));
@@ -40,7 +39,7 @@ public class MuteDisability extends Disability {
 				if (original == null) continue;
 				((Map<String, ?>) children.get(d.getRoot())).remove(name);
 				((Map<String, ?>) literals.get(d.getRoot())).remove(name);
-				// Aliases (tell, w, tm) already redirect; Brigadier only follows one redirect level.
+
 				CommandNode<CommandSourceStack> target = original;
 				while (target.getRedirect() != null) target = target.getRedirect();
 				d.register(Commands.literal(name).redirect(target, ctx -> {
@@ -54,7 +53,7 @@ public class MuteDisability extends Disability {
 	}
 
 	public static void registerEvents() {
-		// /say, /me, /msg, /teammsg all speak through this path instead of normal chat.
+
 		ServerMessageEvents.ALLOW_COMMAND_MESSAGE.register((message, source, params) -> {
 			if (!muted(source.getEntity())) return true;
 			source.sendSystemMessage(Component.literal("You can't speak."));

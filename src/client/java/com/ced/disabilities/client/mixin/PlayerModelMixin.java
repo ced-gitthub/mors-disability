@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.client.mixin;
 
 import com.ced.disabilities.DisabilityManager;
@@ -12,10 +13,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-/** Amputated Offhand: the left arm (and sleeve) is not drawn. */
 @Mixin(PlayerModel.class)
 public abstract class PlayerModelMixin {
-	/** Models whose arm we hid, so it is shown again afterwards and no other model is touched. */
+
 	private static final java.util.Set<PlayerModel> HIDDEN = java.util.Collections.newSetFromMap(new java.util.WeakHashMap<>());
 
 	@Inject(method = "setupAnim(Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;)V", at = @At("TAIL"))

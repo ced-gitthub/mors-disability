@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -6,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-/** Sprinting for more than ten seconds triggers an attack: one heart per second for three seconds, even if you stop. */
 public class AsthmaDisability extends Disability {
 	private static final int LIMIT_TICKS = 200;
 	private static final int ATTACK_TICKS = 60;

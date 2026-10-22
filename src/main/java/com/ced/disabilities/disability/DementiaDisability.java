@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import com.ced.disabilities.DisabilityManager;
@@ -20,10 +21,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-/**
- * False memories: furnaces, chests and other containers you used are empty when you come back
- * (you only thought you filled them), plus sudden lapses that darken the world and change your held slot.
- */
 public class DementiaDisability extends Disability {
 	private static final Random RANDOM = new Random();
 	private static final int AWAY_BLOCKS = 12;
@@ -31,15 +28,12 @@ public class DementiaDisability extends Disability {
 	private static final int MAX_TRACKED = 8;
 	private static boolean registered;
 
-	/** Per player: containers they used (dimension + position) and whether they have walked away from them since. */
 	private final Map<UUID, Map<String, Memory>> memories = new HashMap<>();
 
-	/** Container each player just clicked; remembered only if its menu actually opened. */
 	private final Map<UUID, BlockPos> pending = new HashMap<>();
 
 	private static final int LAPSE_TICKS = 100;
 
-	/** A blackout in progress: where the player stood when it began, and ticks left. */
 	private static final class Lapse {
 		final net.minecraft.world.phys.Vec3 origin;
 		int ticks;
@@ -95,7 +89,6 @@ public class DementiaDisability extends Disability {
 		if (Boolean.getBoolean("disabilitystack.selftest")) DisabilityMod.LOGGER.info("[selftest] dementia fired");
 	}
 
-	/** After the blackout, the player comes to within about 2 blocks of where they stood before it. */
 	private void displace(ServerPlayer player, net.minecraft.world.phys.Vec3 origin) {
 		var level = player.level();
 		for (int i = 0; i < 12; i++) {
@@ -109,7 +102,6 @@ public class DementiaDisability extends Disability {
 		}
 	}
 
-	/** Once the player has walked away from a used container and come back, its contents are gone. */
 	private void forget(ServerPlayer player) {
 		Map<String, Memory> map = memories.get(player.getUUID());
 		if (map == null || map.isEmpty()) return;

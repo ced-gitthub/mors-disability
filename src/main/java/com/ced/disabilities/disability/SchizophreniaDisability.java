@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import com.ced.disabilities.DisabilityMod;
@@ -8,7 +9,6 @@ import net.minecraft.sounds.SoundSource;
 
 import java.util.Random;
 
-/** Hallucinated sounds only the player hears. */
 public class SchizophreniaDisability extends Disability {
 	private static final Random RANDOM = new Random();
 	private static final SoundEvent[] SOUNDS = {SoundEvents.CREEPER_PRIMED, SoundEvents.ZOMBIE_AMBIENT,

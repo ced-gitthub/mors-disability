@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import com.ced.disabilities.DisabilityConfig;
@@ -56,7 +57,6 @@ public final class Disabilities {
 		register(new AnosognosiaDisability());
 	}
 
-	/** Registers the Fabric events some disabilities rely on. Call once at startup. */
 	public static void init() {
 		InsomniaDisability.registerEvents();
 		MuteDisability.registerEvents();
@@ -85,7 +85,6 @@ public final class Disabilities {
 
 	public static final List<String> SEVERITIES = List.of("mild", "moderate", "severe");
 
-	/** How much each disability disrupts play; each severity can have its own timer in the config. */
 	private static final Map<String, String> SEVERITY = new java.util.HashMap<>();
 
 	static {
@@ -100,12 +99,10 @@ public final class Disabilities {
 		return SEVERITY.getOrDefault(id, "moderate");
 	}
 
-	/** A random enabled disability the player does not own yet, or null if none is left. */
 	public static Disability pickRandom(List<String> owned) {
 		return pickRandom(owned, null);
 	}
 
-	/** Same, limited to one severity; a null severity means any. */
 	public static Disability pickRandom(List<String> owned, String severity) {
 		List<Disability> candidates = new ArrayList<>();
 		for (Disability d : ALL.values()) {

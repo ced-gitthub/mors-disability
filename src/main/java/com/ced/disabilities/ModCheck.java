@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities;
 
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -8,7 +9,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
-/** Players without the mod installed are refused at login: the client must answer this channel. */
 public final class ModCheck {
 	public record Hello() implements CustomPacketPayload {
 		public static final Type<Hello> TYPE = new Type<>(Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "hello"));

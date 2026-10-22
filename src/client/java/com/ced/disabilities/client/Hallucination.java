@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.client;
 
 import com.ced.disabilities.DisabilityManager;
@@ -19,10 +20,6 @@ import java.util.Set;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Schizophrenia: about one in five nearby mobs and players are drawn as a different mob of the same kind
- * (ground, sea or air). The choice is made once per mob and kept until the disability ends or you rejoin.
- */
 public final class Hallucination {
 	private static final List<EntityType<?>> GROUND = List.of(EntityTypes.ZOMBIE, EntityTypes.SKELETON, EntityTypes.CREEPER,
 			EntityTypes.VILLAGER, EntityTypes.SPIDER, EntityTypes.PIG, EntityTypes.COW, EntityTypes.SHEEP, EntityTypes.WITCH,
@@ -32,13 +29,13 @@ public final class Hallucination {
 	private static final List<EntityType<?>> AIR = List.of(EntityTypes.BAT, EntityTypes.PARROT, EntityTypes.BEE,
 			EntityTypes.PHANTOM, EntityTypes.VEX, EntityTypes.ALLAY, EntityTypes.GHAST, EntityTypes.BLAZE);
 	private static final Random RANDOM = new Random();
-	/** Chance that a given mob is drawn as something else; the rest stay as they are. */
+
 	private static final int SWAP_PERCENT = 20;
 
 	private record Fake(EntityType<?> type, LivingEntity entity) {}
 
 	private static final Map<Integer, Fake> FAKES = new HashMap<>();
-	/** Mobs rolled to stay as they really are. */
+
 	private static final Set<Integer> UNCHANGED = new HashSet<>();
 
 	private Hallucination() {}
@@ -58,7 +55,6 @@ public final class Hallucination {
 		return GROUND;
 	}
 
-	/** The stand-in to draw instead of {@code real}, or null to draw it normally. */
 	public static Entity replacement(Entity real) {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.level == null || real == mc.player || real.isInvisible() || !(real instanceof LivingEntity living) || real instanceof ArmorStand || isFake(real)) return null;
@@ -98,7 +94,6 @@ public final class Hallucination {
 		fake.walkAnimation.update(Math.min(1.0f, (float) Math.hypot(real.getX() - real.xo, real.getZ() - real.zo) * 4.0f), 0.4f, 1.0f);
 	}
 
-	/** Drops stand-ins for entities that are gone, or all of them when the effect is not active. */
 	public static void tick(Minecraft mc) {
 		if (FAKES.isEmpty() && UNCHANGED.isEmpty()) return;
 		if (mc.level == null || !active(mc)) { FAKES.clear(); UNCHANGED.clear(); return; }

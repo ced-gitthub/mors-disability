@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities;
 
 import net.fabricmc.api.ModInitializer;

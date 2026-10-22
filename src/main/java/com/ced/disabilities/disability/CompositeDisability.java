@@ -1,8 +1,8 @@
+// Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities.disability;
 
 import net.minecraft.server.level.ServerPlayer;
 
-/** A disability made of several smaller ones whose lifecycle hooks are forwarded. */
 public class CompositeDisability extends Disability {
 	private final Disability[] parts;
 
