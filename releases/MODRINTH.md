@@ -81,6 +81,9 @@ File: `config/mors-disability.json`. Edit it, then run `/disability reload` (or 
 
 Use these ids with `/disability give` and in `disabledDisabilities`.
 
+## Support
+If you enjoy the mod, you can support development on Ko-fi: https://ko-fi.com/morsvald
+
 ## Credits
 Inspired by [Disabilities](https://modrinth.com/mod/disabilities) by OddSense. Licensed MIT.
 
