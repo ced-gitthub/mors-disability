@@ -26,6 +26,8 @@ Inspired by the [Disabilities](https://modrinth.com/mod/disabilities) mod by Odd
 
 **Must be installed on both the server and every client.** Players without the mod are refused at login. Requires Fabric API.
 
+**Optional: Simple Voice Chat.** If the server has it, Mute silences your microphone, Deafness blocks all voices you would hear, Schizophrenia plays hallucinated whispers only you hear, and Tourette's adds vocal tic bursts. Not required.
+
 ## How it works
 - A player with no disability gets a hidden countdown, shown on the HUD as "Next disability". When it ends they get a random disability.
 - Each disability has its own timer based on its severity: **mild 10 min, moderate 5 min, severe 3 min**.
