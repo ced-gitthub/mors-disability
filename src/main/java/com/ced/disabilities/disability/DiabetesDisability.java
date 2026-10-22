@@ -17,7 +17,7 @@ public class DiabetesDisability extends Disability {
 		player.causeFoodExhaustion(0.03f);
 		if (player.getFoodData().getFoodLevel() <= LOW_FOOD && player.tickCount % 100 == 0) {
 			player.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 140, 0, true, false, true));
-			player.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 140, 0, true, false, true));
+			player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 140, 0, true, false, true));
 		}
 	}
 }

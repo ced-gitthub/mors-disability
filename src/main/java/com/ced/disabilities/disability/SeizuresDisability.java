@@ -18,14 +18,14 @@ public class SeizuresDisability extends Disability {
 	@Override
 	public void tick(ServerPlayer player) {
 		if (RANDOM.nextInt(odds(6000)) != 0) return;
-		player.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 240, 0, true, false, false));
-		player.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 120, 5, true, false, false));
+		player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 240, 0, true, false, false));
+		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 120, 5, true, false, false));
 		if (Boolean.getBoolean("disabilitystack.selftest")) DisabilityMod.LOGGER.info("[selftest] seizures fired");
 	}
 
 	@Override
 	public void onRemove(ServerPlayer player) {
-		player.removeEffect(MobEffects.NAUSEA);
-		player.removeEffect(MobEffects.SLOWNESS);
+		player.removeEffect(MobEffects.CONFUSION);
+		player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
 	}
 }

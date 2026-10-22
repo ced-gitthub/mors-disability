@@ -19,7 +19,7 @@ public class NarcolepsyDisability extends Disability {
 	public void tick(ServerPlayer player) {
 		if (RANDOM.nextInt(odds(4800)) != 0) return;
 		if (Boolean.getBoolean("disabilitystack.selftest")) com.ced.disabilities.DisabilityMod.LOGGER.info("[selftest] narcolepsy fired motion={}", player.getDeltaMovement());
-		player.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 100, 6, false, false, true));
+		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 6, false, false, true));
 		player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100, 0, false, false, true));
 		player.sendSystemMessage(Component.literal("You fell asleep..."), true);
 	}

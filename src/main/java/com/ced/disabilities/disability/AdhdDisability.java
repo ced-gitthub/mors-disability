@@ -2,7 +2,7 @@
 package com.ced.disabilities.disability;
 
 import com.ced.disabilities.DisabilityMod;
-import net.minecraft.network.protocol.game.ClientboundSetHeldSlotPacket;
+import net.minecraft.network.protocol.game.ClientboundSetCarriedItemPacket;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Random;
@@ -23,8 +23,8 @@ public class AdhdDisability extends Disability {
 			}
 			case 1 -> {
 				int slot = RANDOM.nextInt(9);
-				player.getInventory().setSelectedSlot(slot);
-				player.connection.send(new ClientboundSetHeldSlotPacket(slot));
+				player.getInventory().selected = slot;
+				player.connection.send(new ClientboundSetCarriedItemPacket(slot));
 			}
 			case 2 -> player.drop(false);
 			default -> player.connection.teleport(player.getX(), player.getY(), player.getZ(),

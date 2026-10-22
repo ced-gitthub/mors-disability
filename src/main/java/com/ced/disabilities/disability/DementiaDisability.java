@@ -6,8 +6,8 @@ import com.ced.disabilities.DisabilityMod;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ClientboundSetHeldSlotPacket;
-import net.minecraft.resources.Identifier;
+import net.minecraft.network.protocol.game.ClientboundSetCarriedItemPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.Container;
@@ -42,7 +42,7 @@ public class DementiaDisability extends Disability {
 
 	private final Map<UUID, Lapse> lapses = new HashMap<>();
 
-	private record Memory(Identifier dim, BlockPos pos, boolean[] away) {}
+	private record Memory(ResourceLocation dim, BlockPos pos, boolean[] away) {}
 
 	public DementiaDisability() {
 		super("dementia", "Dementia", "Memory loss and confusion: forgotten containers, and 'Where am I?' blackouts");
@@ -60,7 +60,7 @@ public class DementiaDisability extends Disability {
 
 	private void remember(ServerPlayer player, BlockPos pos) {
 		Map<String, Memory> map = memories.computeIfAbsent(player.getUUID(), k -> new LinkedHashMap<>());
-		Identifier dim = player.level().dimension().identifier();
+		ResourceLocation dim = player.level().dimension().location();
 		String key = dim + "@" + pos.asLong();
 		map.remove(key);
 		map.put(key, new Memory(dim, pos.immutable(), new boolean[1]));
@@ -83,8 +83,8 @@ public class DementiaDisability extends Disability {
 		player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, LAPSE_TICKS + 20, 0, true, false, false));
 		lapses.put(player.getUUID(), new Lapse(player.position(), LAPSE_TICKS));
 		int slot = RANDOM.nextInt(9);
-		player.getInventory().setSelectedSlot(slot);
-		player.connection.send(new ClientboundSetHeldSlotPacket(slot));
+		player.getInventory().selected = slot;
+		player.connection.send(new ClientboundSetCarriedItemPacket(slot));
 		player.sendSystemMessage(Component.literal("Where am I...?"), true);
 		if (Boolean.getBoolean("disabilitystack.selftest")) DisabilityMod.LOGGER.info("[selftest] dementia fired");
 	}
@@ -105,7 +105,7 @@ public class DementiaDisability extends Disability {
 	private void forget(ServerPlayer player) {
 		Map<String, Memory> map = memories.get(player.getUUID());
 		if (map == null || map.isEmpty()) return;
-		Identifier dim = player.level().dimension().identifier();
+		ResourceLocation dim = player.level().dimension().location();
 		var it = map.values().iterator();
 		while (it.hasNext()) {
 			Memory m = it.next();

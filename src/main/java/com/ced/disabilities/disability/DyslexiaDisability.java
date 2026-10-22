@@ -39,10 +39,10 @@ public class DyslexiaDisability extends Disability {
 
 	public static void registerEvents() {
 		ServerMessageEvents.ALLOW_CHAT_MESSAGE.register((message, sender, params) -> {
-			List<String> owned = sender.getAttachedOrElse(DisabilityManager.OWNED, List.<String>of());
+			List<String> owned = DisabilityManager.ownedOf(sender);
 			if (!owned.contains("dyslexia") || owned.contains("mute")) return true;
 			sender.level().getServer().getPlayerList().broadcastSystemMessage(
-					Component.literal("<" + sender.getGameProfile().name() + "> " + scramble(message.signedContent())), false);
+					Component.literal("<" + sender.getGameProfile().getName() + "> " + scramble(message.signedContent())), false);
 			return false;
 		});
 	}

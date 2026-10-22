@@ -3,40 +3,19 @@ package com.ced.disabilities;
 
 import com.ced.disabilities.disability.Disabilities;
 import com.ced.disabilities.disability.Disability;
-import com.mojang.serialization.Codec;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public final class DisabilityManager {
-	public static final AttachmentType<List<String>> OWNED = AttachmentRegistry.<List<String>>builder()
-			.persistent(Codec.STRING.listOf())
-			.copyOnDeath()
-			.initializer(List::of)
-			.syncWith(ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list()), AttachmentSyncPredicate.targetOnly())
-			.buildAndRegister(Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "owned"));
-
-	public static final AttachmentType<java.util.Map<String, Integer>> TIMERS = AttachmentRegistry.<java.util.Map<String, Integer>>builder()
-			.persistent(Codec.unboundedMap(Codec.STRING, Codec.INT))
-			.copyOnDeath()
-			.buildAndRegister(Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "timers"));
-
-	public static final AttachmentType<Integer> COUNTDOWN = AttachmentRegistry.<Integer>builder()
-			.initializer(() -> -1)
-			.syncWith(ByteBufCodecs.VAR_INT, AttachmentSyncPredicate.targetOnly())
-			.buildAndRegister(Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "countdown"));
-
-	public static final AttachmentType<java.util.Map<String, Integer>> TIMER_VIEW = AttachmentRegistry.<java.util.Map<String, Integer>>builder()
-			.initializer(java.util.Map::of)
-			.syncWith(ByteBufCodecs.map(java.util.HashMap::new, ByteBufCodecs.STRING_UTF8, ByteBufCodecs.VAR_INT), AttachmentSyncPredicate.targetOnly())
-			.buildAndRegister(Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "timer_view"));
+	public static final ResourceLocation SYNC = new ResourceLocation(DisabilityMod.MOD_ID, "sync");
 
 	private DisabilityManager() {
 	}
@@ -45,8 +24,35 @@ public final class DisabilityManager {
 
 	}
 
+	private static PlayerState.Entry entry(ServerPlayer player) {
+		return PlayerState.get(player.server).entry(player.getUUID());
+	}
+
 	public static List<String> owned(ServerPlayer player) {
-		return player.getAttachedOrElse(OWNED, List.of());
+		return entry(player).owned;
+	}
+
+	public static List<String> ownedOf(Entity e) {
+		if (e instanceof ServerPlayer sp) return owned(sp);
+		if (e != null && e.level().isClientSide && e.getUUID().equals(ClientCache.self)) return ClientCache.owned;
+		return List.of();
+	}
+
+	private static void setOwned(ServerPlayer player, List<String> next) {
+		entry(player).owned = next;
+		PlayerState.get(player.server).touch();
+		sync(player);
+	}
+
+	public static void sync(ServerPlayer player) {
+		FriendlyByteBuf buf = PacketByteBufs.create();
+		List<String> owned = owned(player);
+		buf.writeVarInt(owned.size());
+		for (String s : owned) buf.writeUtf(s);
+		java.util.Map<String, Integer> view = entry(player).timers;
+		buf.writeVarInt(view.size());
+		view.forEach((k, v) -> { buf.writeUtf(k); buf.writeVarInt(v); });
+		if (ServerPlayNetworking.canSend(player, SYNC)) ServerPlayNetworking.send(player, SYNC, buf);
 	}
 
 	public static boolean give(ServerPlayer player, Disability d) {
@@ -54,7 +60,7 @@ public final class DisabilityManager {
 		if (owned.contains(d.id)) return false;
 		List<String> next = new ArrayList<>(owned);
 		next.add(d.id);
-		player.setAttached(OWNED, List.copyOf(next));
+		setOwned(player, List.copyOf(next));
 		d.onAdd(player);
 		int len = lengthFor(d.id);
 		if (len > 0) setTimer(player, d.id, len);
@@ -67,7 +73,7 @@ public final class DisabilityManager {
 		if (!owned.contains(d.id)) return false;
 		List<String> next = new ArrayList<>(owned);
 		next.remove(d.id);
-		player.setAttached(OWNED, List.copyOf(next));
+		setOwned(player, List.copyOf(next));
 		d.onRemove(player);
 		setTimer(player, d.id, null);
 		return true;
@@ -78,7 +84,7 @@ public final class DisabilityManager {
 			Disability d = Disabilities.get(id);
 			if (d != null) remove(player, d);
 		}
-		player.setAttached(OWNED, List.of());
+		setOwned(player, List.of());
 		resetTimers(player);
 	}
 
@@ -99,9 +105,10 @@ public final class DisabilityManager {
 	private static int cfg0() { return DisabilityConfig.get().intervalTicks(); }
 
 	private static void setTimer(ServerPlayer player, String id, Integer ticks) {
-		java.util.Map<String, Integer> m = new java.util.HashMap<>(player.getAttachedOrElse(TIMERS, java.util.Map.of()));
+		java.util.Map<String, Integer> m = new java.util.HashMap<>(entry(player).timers);
 		if (ticks == null) m.remove(id); else m.put(id, ticks);
-		player.setAttached(TIMERS, m);
+		entry(player).timers = m;
+		PlayerState.get(player.server).touch();
 	}
 
 	public static void resetTimers(ServerPlayer player) {
@@ -110,7 +117,9 @@ public final class DisabilityManager {
 			int len = lengthFor(id);
 			if (len > 0) fresh.put(id, len);
 		}
-		player.setAttached(TIMERS, fresh);
+		entry(player).timers = fresh;
+		PlayerState.get(player.server).touch();
+		sync(player);
 	}
 
 	private static void expireAll(ServerPlayer player, List<String> ids) {
@@ -136,7 +145,7 @@ public final class DisabilityManager {
 			if (d != null) d.tick(player);
 		}
 
-		java.util.Map<String, Integer> old = player.getAttachedOrElse(TIMERS, java.util.Map.of());
+		java.util.Map<String, Integer> old = entry(player).timers;
 		java.util.Map<String, Integer> timers = new java.util.HashMap<>();
 		List<String> expired = new ArrayList<>();
 		int timed = 0;
@@ -154,13 +163,13 @@ public final class DisabilityManager {
 			timers.put(NEXT, left);
 			if (left == 0) { timers.remove(NEXT); bootstrap = true; }
 		}
-		if (!timers.equals(old)) player.setAttached(TIMERS, timers);
+		if (!timers.equals(old)) { entry(player).timers = timers; PlayerState.get(player.server).touch(); }
 		if (bootstrap) expireAll(player, List.of());
 		boolean allDone = bootstrap || (timed > 0 && expired.size() == timed);
 		if (allDone && !bootstrap) expireAll(player, expired);
 
 		if (player.tickCount % 20 == 0 || allDone) {
-			player.setAttached(TIMER_VIEW, new java.util.HashMap<>(player.getAttachedOrElse(TIMERS, java.util.Map.of())));
+			sync(player);
 		}
 	}
 }

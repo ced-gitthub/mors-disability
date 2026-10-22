@@ -40,7 +40,7 @@ public final class Hallucination {
 	private Hallucination() {}
 
 	public static boolean active(Minecraft mc) {
-		return mc.player != null && mc.player.getAttachedOrElse(DisabilityManager.OWNED, List.<String>of()).contains("schizophrenia");
+		return mc.player != null && mc.DisabilityManager.ownedOf(player).contains("schizophrenia");
 	}
 
 	private static boolean isFake(Entity e) {

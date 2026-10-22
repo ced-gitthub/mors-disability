@@ -5,6 +5,7 @@ import com.ced.disabilities.DisabilityManager;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 
@@ -24,13 +25,13 @@ public class AmputatedOffhandDisability extends Disability {
 	}
 
 	private static boolean owns(Player p) {
-		return p.getAttachedOrElse(DisabilityManager.OWNED, List.<String>of()).contains("amputated_offhand");
+		return DisabilityManager.ownedOf(p).contains("amputated_offhand");
 	}
 
 	public static void registerEvents() {
 		UseItemCallback.EVENT.register((player, level, hand) ->
 				owns(player) && hand == InteractionHand.OFF_HAND
-						? InteractionResult.FAIL : InteractionResult.PASS);
+						? InteractionResultHolder.fail(player.getItemInHand(hand)) : InteractionResultHolder.pass(player.getItemInHand(hand)));
 		UseBlockCallback.EVENT.register((player, level, hand, hit) ->
 				owns(player) && hand == InteractionHand.OFF_HAND
 						? InteractionResult.FAIL : InteractionResult.PASS);

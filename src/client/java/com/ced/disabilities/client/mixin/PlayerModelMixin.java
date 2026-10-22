@@ -23,7 +23,7 @@ public abstract class PlayerModelMixin {
 		var level = Minecraft.getInstance().level;
 		Entity e = level == null ? null : level.getEntity(state.id);
 		PlayerModel self = (PlayerModel) (Object) this;
-		if (e != null && e.getAttachedOrElse(DisabilityManager.OWNED, List.<String>of()).contains("amputated_offhand")) {
+		if (e != null && DisabilityManager.ownedOf(e).contains("amputated_offhand")) {
 			self.leftArm.visible = false;
 			self.leftSleeve.visible = false;
 			HIDDEN.add(self);

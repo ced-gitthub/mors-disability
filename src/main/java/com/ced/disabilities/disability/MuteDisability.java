@@ -21,7 +21,7 @@ public class MuteDisability extends Disability {
 	}
 
 	private static boolean muted(net.minecraft.world.entity.Entity e) {
-		return e != null && e.getAttachedOrElse(DisabilityManager.OWNED, List.<String>of()).contains("mute");
+		return e != null && DisabilityManager.ownedOf(e).contains("mute");
 	}
 
 	private static final String[] SPEECH_COMMANDS = {"say", "me", "msg", "tell", "w", "teammsg", "tm"};
@@ -60,7 +60,7 @@ public class MuteDisability extends Disability {
 			return false;
 		});
 		ServerMessageEvents.ALLOW_CHAT_MESSAGE.register((message, sender, params) -> {
-			if (sender.getAttachedOrElse(DisabilityManager.OWNED, List.<String>of()).contains("mute")) {
+			if (DisabilityManager.ownedOf(sender).contains("mute")) {
 				sender.sendSystemMessage(Component.literal("You can't speak."), true);
 				return false;
 			}

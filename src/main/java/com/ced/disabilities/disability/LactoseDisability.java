@@ -38,9 +38,9 @@ public class LactoseDisability extends Disability {
 		if (left % 20 == 0) {
 			int secondsLeft = left / 20;
 			if (secondsLeft <= 1) {
-				player.kill(player.level());
+				player.kill();
 			} else {
-				player.hurtServer(player.level(), player.damageSources().magic(), player.getHealth() / secondsLeft);
+				player.hurt(player.damageSources().magic(), player.getHealth() / secondsLeft);
 			}
 		}
 		if (left <= 1 || !player.isAlive()) dying.remove(id); else dying.put(id, left - 1);

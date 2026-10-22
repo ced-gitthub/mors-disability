@@ -19,7 +19,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 
@@ -88,7 +88,7 @@ public class DisabilityClient implements ClientModInitializer {
 		selftest(mc);
 		if (forceSprint && mc.player != null) { mc.player.setSprinting(true); }
 		List<String> owned = mc.player == null ? List.of()
-				: mc.player.getAttachedOrElse(DisabilityManager.OWNED, List.of());
+				: DisabilityManager.ownedOf(mc.player);
 		var master = mc.options.getSoundSourceOptionInstance(net.minecraft.sounds.SoundSource.MASTER);
 		if (master.get() != lastMaster) { dbg("master " + lastMaster + " -> " + master.get() + " owned=" + owned); lastMaster = master.get(); }
 		if (owned.contains("deaf")) {
@@ -175,29 +175,42 @@ public class DisabilityClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		if (!Boolean.getBoolean("disabilitystack.nohello")) {
-			net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking.registerGlobalReceiver(com.ced.disabilities.ModCheck.Hello.TYPE, (payload, context) -> {});
+			net.fabricmc.fabric.api.client.networking.v1.ClientLoginNetworking.registerGlobalReceiver(com.ced.disabilities.ModCheck.HELLO,
+					(client, handler, buf, listenerAdder) -> java.util.concurrent.CompletableFuture.completedFuture(net.fabricmc.fabric.api.networking.v1.PacketByteBufs.create()));
 		}
+		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(DisabilityManager.SYNC, (client, handler, buf, responseSender) -> {
+			int n = buf.readVarInt();
+			List<String> owned = new java.util.ArrayList<>();
+			for (int i = 0; i < n; i++) owned.add(buf.readUtf());
+			int m = buf.readVarInt();
+			java.util.Map<String, Integer> view = new java.util.HashMap<>();
+			for (int i = 0; i < m; i++) view.put(buf.readUtf(), buf.readVarInt());
+			client.execute(() -> {
+				com.ced.disabilities.ClientCache.self = client.player == null ? null : client.player.getUUID();
+				com.ced.disabilities.ClientCache.owned = List.copyOf(owned);
+				com.ced.disabilities.ClientCache.timerView = view;
+			});
+		});
 		KeyMapping toggle = KeyBindingHelper.registerKeyBinding(new KeyMapping(
 				"key.mors-disability.toggle_list", InputConstants.Type.KEYSYM, InputConstants.KEY_H,
-				KeyMapping.Category.register(Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "main"))));
+				"key.categories.mors-disability"));
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			while (toggle.consumeClick()) showList = !showList;
 			tickEffects(client);
 			Hallucination.tick(client);
 		});
-		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> restoreVolume(client));
+		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> { restoreVolume(client); com.ced.disabilities.ClientCache.clear(); });
 		ClientLifecycleEvents.CLIENT_STOPPING.register(DisabilityClient::restoreVolume);
 		ClientLifecycleEvents.CLIENT_STARTED.register(DisabilityClient::recoverVolume);
 
-		ScreenEvents.AFTER_INIT.register((client, screen, sw, sh) -> ScreenMouseEvents.allowMouseClick(screen).register((s, ev) -> {
-			if (!showList || ev.button() != 0 || ev.x() < 4 || ev.x() >= 4 + headW || ev.y() < 4 || ev.y() >= 18) return true;
+		ScreenEvents.AFTER_INIT.register((client, screen, sw, sh) -> ScreenMouseEvents.allowMouseClick(screen).register((s, mx, my, btn) -> {
+			if (!showList || btn != 0 || mx < 4 || mx >= 4 + headW || my < 4 || my >= 18) return true;
 			collapsed = !collapsed;
 			return false;
 		}));
 
-		HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT,
-				Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "list"), (graphics, tickCounter) -> drawHud(graphics));
+		net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback.EVENT.register((graphics, tickDelta) -> drawHud(graphics));
 	}
 
 	private static long clientTick;
@@ -209,7 +222,7 @@ public class DisabilityClient implements ClientModInitializer {
 
 	private static int remainingTicks(Minecraft mc) {
 		clientTick = mc.player.tickCount;
-		int v = mc.player.getAttachedOrElse(DisabilityManager.COUNTDOWN, -1);
+		int v = com.ced.disabilities.ClientCache.countdown;
 		if (v < 0) {
 			lastSynced = -1;
 			return -1;
@@ -236,12 +249,12 @@ public class DisabilityClient implements ClientModInitializer {
 	private static void drawHud(GuiGraphics g) {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.player == null) return;
-		List<String> owned = mc.player.getAttachedOrElse(DisabilityManager.OWNED, List.of());
+		List<String> owned = DisabilityManager.ownedOf(mc.player);
 		if (owned.contains("color_blind")) {
 			g.fill(0, 0, mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight(), 0x66808080);
 		}
 		if (!showList || owned.contains("anosognosia")) return;
-		var view = mc.player.getAttachedOrElse(DisabilityManager.TIMER_VIEW, java.util.Map.<String, Integer>of());
+		var view = com.ced.disabilities.ClientCache.timerView;
 		if (!view.equals(lastView)) { lastView = view; viewAt = mc.player.tickCount; }
 		var font = mc.font;
 
@@ -285,9 +298,8 @@ public class DisabilityClient implements ClientModInitializer {
 			boolean over = mx >= x && mx < x + w && my >= ry && my < ry + ROW_H;
 			if (over) g.fill(x + 1, ry, x + w - 1, ry + ROW_H, 0x40FFFFFF);
 			g.fill(x + 3, ry + 1, x + 13, ry + 11, badgeColor(id));
-			g.blit(RenderPipelines.GUI_TEXTURED,
-					Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "textures/gui/disability/" + id + ".png"),
-					x + 3, ry + 1, 0f, 0f, 10, 10, 16, 16, 16, 16);
+			g.blit(new ResourceLocation(DisabilityMod.MOD_ID, "textures/gui/disability/" + id + ".png"),
+					x + 3, ry + 1, 0f, 0f, 10, 10, 16, 16);
 			g.drawString(font, d != null ? d.displayName : id, x + 17, ry + 2, 0xFFFFFFFF, true);
 			Integer left = view.get(id);
 			if (left != null) {

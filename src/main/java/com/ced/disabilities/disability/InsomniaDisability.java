@@ -16,7 +16,7 @@ public class InsomniaDisability extends Disability {
 	public static void registerEvents() {
 		EntitySleepEvents.ALLOW_SLEEPING.register((player, pos) -> {
 			if (player instanceof ServerPlayer sp
-					&& sp.getAttachedOrElse(DisabilityManager.OWNED, List.<String>of()).contains("insomnia")) {
+					&& DisabilityManager.ownedOf(sp).contains("insomnia")) {
 				sp.sendSystemMessage(net.minecraft.network.chat.Component.literal("You can't fall asleep."), true);
 				return Player.BedSleepingProblem.OTHER_PROBLEM;
 			}

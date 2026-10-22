@@ -19,14 +19,14 @@ public class VertigoDisability extends Disability {
 		for (int i = 2; i <= 6; i++) {
 			if (!player.level().getBlockState(feet.below(i)).isAir()) return;
 		}
-		player.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 160, 0, true, false, false));
-		player.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 60, 1, true, false, false));
+		player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 160, 0, true, false, false));
+		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 1, true, false, false));
 		if (Boolean.getBoolean("disabilitystack.selftest")) DisabilityMod.LOGGER.info("[selftest] vertigo fired");
 	}
 
 	@Override
 	public void onRemove(ServerPlayer player) {
-		player.removeEffect(MobEffects.NAUSEA);
-		player.removeEffect(MobEffects.SLOWNESS);
+		player.removeEffect(MobEffects.CONFUSION);
+		player.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
 	}
 }

@@ -26,6 +26,6 @@ public class SchizophreniaDisability extends Disability {
 				net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.wrapAsHolder(s), SoundSource.HOSTILE,
 				player.getX() + RANDOM.nextInt(7) - 3, player.getY(), player.getZ() + RANDOM.nextInt(7) - 3,
 				1.0f, 0.8f + RANDOM.nextFloat() * 0.4f, RANDOM.nextLong()));
-		if (Boolean.getBoolean("disabilitystack.selftest")) DisabilityMod.LOGGER.info("[selftest] schizophrenia fired {}", s.location());
+		if (Boolean.getBoolean("disabilitystack.selftest")) DisabilityMod.LOGGER.info("[selftest] schizophrenia fired {}", s.getLocation());
 	}
 }

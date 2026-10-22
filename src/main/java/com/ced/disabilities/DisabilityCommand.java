@@ -28,7 +28,7 @@ public final class DisabilityCommand {
 
 	public static void register(CommandDispatcher<CommandSourceStack> d) {
 		d.register(Commands.literal("disability")
-				.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+				.requires(src -> src.hasPermission(2))
 				.then(Commands.literal("give").then(Commands.argument("targets", EntityArgument.players())
 						.then(Commands.argument("id", StringArgumentType.word()).suggests(IDS).executes(ctx -> give(ctx)))))
 				.then(Commands.literal("remove").then(Commands.argument("targets", EntityArgument.players())
@@ -84,7 +84,7 @@ public final class DisabilityCommand {
 	private static int list(CommandContext<CommandSourceStack> ctx, Collection<ServerPlayer> targets) {
 		for (ServerPlayer p : targets) {
 			List<String> owned = DisabilityManager.owned(p);
-			ctx.getSource().sendSuccess(() -> Component.literal(p.getGameProfile().name() + ": "
+			ctx.getSource().sendSuccess(() -> Component.literal(p.getGameProfile().getName() + ": "
 					+ (owned.isEmpty() ? "none" : String.join(", ", owned))), false);
 		}
 		return targets.size();

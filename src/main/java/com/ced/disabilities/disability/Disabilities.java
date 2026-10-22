@@ -18,15 +18,13 @@ public final class Disabilities {
 
 	static {
 		register(new BlindDisability());
-		register(new AttributeDisability("brittle_bones", "Brittle Bones", "Double fall damage",
-				Attributes.FALL_DAMAGE_MULTIPLIER, 1.0, Operation.ADD_MULTIPLIED_BASE));
-		register(new AttributeDisability("short", "Short", "Half a block shorter",
-				Attributes.SCALE, -0.28, Operation.ADD_MULTIPLIED_BASE));
+		register(new FallDisability("brittle_bones", "Brittle Bones", "Double fall damage", 2.0f, 0f));
+		register(new AttributeDisability("short", "Short", "A shorter stride", Attributes.MOVEMENT_SPEED, -0.1, Operation.MULTIPLY_BASE));
 		register(new CancerDisability());
 		register(new InsomniaDisability());
 		register(new CompositeDisability("arthritis", "Arthritis", "Mining and attacking take longer",
-				new AttributeDisability("arthritis_attack", "", "", Attributes.ATTACK_SPEED, -0.5, Operation.ADD_MULTIPLIED_BASE),
-				new AttributeDisability("arthritis_mining", "", "", Attributes.BLOCK_BREAK_SPEED, -0.5, Operation.ADD_MULTIPLIED_BASE)));
+				new AttributeDisability("arthritis_attack", "", "", Attributes.ATTACK_SPEED, -0.5, Operation.MULTIPLY_BASE),
+				new MiningFatigueDisability("arthritis_mining")));
 		register(new KleptomaniaDisability());
 		register(new LactoseDisability());
 		register(new AsthmaDisability());
@@ -34,8 +32,8 @@ public final class Disabilities {
 		register(new MuteDisability());
 		register(new AmputatedOffhandDisability());
 		register(new CompositeDisability("amputated_leg", "Amputated Leg", "You move and jump poorly",
-				new AttributeDisability("amputated_leg_speed", "", "", Attributes.MOVEMENT_SPEED, -0.4, Operation.ADD_MULTIPLIED_BASE),
-				new AttributeDisability("amputated_leg_jump", "", "", Attributes.JUMP_STRENGTH, -0.3, Operation.ADD_MULTIPLIED_BASE)));
+				new AttributeDisability("amputated_leg_speed", "", "", Attributes.MOVEMENT_SPEED, -0.4, Operation.MULTIPLY_BASE),
+				new WeakJumpDisability("amputated_leg_jump", 0.7)));
 		register(new NarcolepsyDisability());
 		register(new TouretteDisability());
 		register(new CerebralPalsyDisability());
@@ -52,8 +50,8 @@ public final class Disabilities {
 		register(new VertigoDisability());
 		register(new ProsopagnosiaDisability());
 		register(new CompositeDisability("scoliosis", "Scoliosis", "A bent spine slows you and makes landings hurt",
-				new AttributeDisability("scoliosis_speed", "", "", Attributes.MOVEMENT_SPEED, -0.15, Operation.ADD_MULTIPLIED_BASE),
-				new AttributeDisability("scoliosis_fall", "", "", Attributes.SAFE_FALL_DISTANCE, -2.0, Operation.ADD_VALUE)));
+				new AttributeDisability("scoliosis_speed", "", "", Attributes.MOVEMENT_SPEED, -0.15, Operation.MULTIPLY_BASE),
+				new FallDisability("scoliosis_fall", "", "", 1.0f, 2f)));
 		register(new AnosognosiaDisability());
 	}
 

@@ -1,29 +1,22 @@
 // Copyright (c) 2026 Ced. MIT License.
 package com.ced.disabilities;
 
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.fabricmc.fabric.api.networking.v1.ServerConfigurationConnectionEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerConfigurationNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerLoginConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerLoginNetworking;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 public final class ModCheck {
-	public record Hello() implements CustomPacketPayload {
-		public static final Type<Hello> TYPE = new Type<>(Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "hello"));
-		public static final StreamCodec<net.minecraft.network.FriendlyByteBuf, Hello> CODEC = StreamCodec.unit(new Hello());
-
-		@Override
-		public Type<? extends CustomPacketPayload> type() { return TYPE; }
-	}
+	public static final ResourceLocation HELLO = new ResourceLocation(DisabilityMod.MOD_ID, "hello");
 
 	private ModCheck() {}
 
 	public static void init() {
-		PayloadTypeRegistry.configurationS2C().register(Hello.TYPE, Hello.CODEC);
-		ServerConfigurationConnectionEvents.CONFIGURE.register((handler, server) -> {
-			if (!ServerConfigurationNetworking.canSend(handler, Hello.TYPE)) {
+		ServerLoginConnectionEvents.QUERY_START.register((handler, server, sender, synchronizer) ->
+				sender.sendPacket(HELLO, PacketByteBufs.create()));
+		ServerLoginNetworking.registerGlobalReceiver(HELLO, (server, handler, understood, buf, synchronizer, responseSender) -> {
+			if (!understood) {
 				handler.disconnect(Component.literal("This server requires the Mors Disability mod (mors-disability). Install it and rejoin."));
 			}
 		});
