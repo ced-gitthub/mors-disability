@@ -55,9 +55,14 @@ public final class DisabilityCommand {
 		if (!Boolean.getBoolean("disabilitystack.selftest")
 				|| !net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("voicechat")) return 0;
 		ServerPlayer p = ctx.getSource().getPlayerOrException();
-		com.ced.disabilities.voice.VoicechatIntegration.selfTest(p);
-		com.ced.disabilities.voice.VoiceFx.whisper(p);
-		com.ced.disabilities.voice.VoiceFx.tic(p);
+		try {
+			com.ced.disabilities.voice.VoicechatIntegration.selfTest(p);
+			com.ced.disabilities.voice.VoiceFx.whisper(p);
+			com.ced.disabilities.voice.VoiceFx.tic(p);
+		} catch (Throwable t) {
+			DisabilityMod.LOGGER.error("[selftest] voicetest failed", t);
+			return 0;
+		}
 		return 1;
 	}
 
