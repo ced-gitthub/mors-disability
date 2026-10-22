@@ -20,6 +20,8 @@ Credits: inspired by the [Disabilities](https://modrinth.com/mod/disabilities) m
 
 Every player randomly gains real-life inspired disabilities on a timer. Blindness, Parkinson's tremors, dementia that wipes your chests, asthma attacks while sprinting, and 25 more. **30 disabilities in total.**
 
+**Warning: includes screen shaking and seizure effects. Not suitable for players sensitive to flashing or shaking visuals.**
+
 Inspired by the [Disabilities](https://modrinth.com/mod/disabilities) mod by OddSense. This is an independent implementation, with no code or assets copied from it.
 
 **Must be installed on both the server and every client.** Players without the mod are refused at login. Requires Fabric API.
