@@ -58,13 +58,13 @@ public class VoicechatIntegration implements VoicechatPlugin {
 		boolean[] cancelled = new boolean[2];
 		MicrophonePacketEvent mic = (MicrophonePacketEvent) java.lang.reflect.Proxy.newProxyInstance(getClass0(), new Class<?>[]{MicrophonePacketEvent.class}, (p, m, a) -> {
 			if (m.getName().equals("getSenderConnection")) return conn;
-			if (m.getName().equals("cancel")) cancelled[0] = true;
+			if (m.getName().equals("cancel")) { cancelled[0] = true; return true; }
 			return null;
 		});
 		new VoicechatIntegration().onMicrophone(mic);
 		EntitySoundPacketEvent snd = (EntitySoundPacketEvent) java.lang.reflect.Proxy.newProxyInstance(getClass0(), new Class<?>[]{EntitySoundPacketEvent.class}, (p, m, a) -> {
 			if (m.getName().equals("getReceiverConnection")) return conn;
-			if (m.getName().equals("cancel")) cancelled[1] = true;
+			if (m.getName().equals("cancel")) { cancelled[1] = true; return true; }
 			return null;
 		});
 		new VoicechatIntegration().onSound(snd);
