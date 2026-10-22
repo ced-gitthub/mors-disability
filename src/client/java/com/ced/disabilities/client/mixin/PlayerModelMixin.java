@@ -23,13 +23,19 @@ public abstract class PlayerModelMixin {
 		var level = Minecraft.getInstance().level;
 		Entity e = level == null ? null : level.getEntity(state.id);
 		PlayerModel self = (PlayerModel) (Object) this;
-		if (e != null && e.getAttachedOrElse(DisabilityManager.OWNED, List.<String>of()).contains("amputated_offhand")) {
-			self.leftArm.visible = false;
-			self.leftSleeve.visible = false;
+		List<String> owned = e == null ? List.<String>of() : e.getAttachedOrElse(DisabilityManager.OWNED, List.<String>of());
+		boolean arm = owned.contains("amputated_offhand");
+		boolean leg = owned.contains("amputated_leg");
+		if (arm || leg) {
+			if (arm) { self.leftArm.visible = false; self.leftSleeve.visible = false; }
+			if (leg) { self.leftLeg.visible = false; self.leftPants.visible = false; }
 			HIDDEN.add(self);
 		} else if (HIDDEN.remove(self)) {
 			self.leftArm.visible = true;
 			self.leftSleeve.visible = true;
+			self.leftLeg.visible = true;
+			self.leftPants.visible = true;
 		}
+
 	}
 }
