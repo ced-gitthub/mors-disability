@@ -18,6 +18,6 @@ public class CerebralPalsyDisability extends Disability {
 		if (RANDOM.nextInt(odds(400)) != 0) return;
 		if (Boolean.getBoolean("disabilitystack.selftest")) com.ced.disabilities.DisabilityMod.LOGGER.info("[selftest] cerebral_palsy fired motion={}", player.getDeltaMovement());
 		player.addDeltaMovement(new Vec3((RANDOM.nextDouble() - 0.5) * 0.8, 0, (RANDOM.nextDouble() - 0.5) * 0.8));
-		player.hurtMarked = true;
+		player.syncVelocity = true;
 	}
 }

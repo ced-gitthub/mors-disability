@@ -50,12 +50,12 @@ public class DisabilityClient implements ClientModInitializer {
 				mc.options.keyUp.setDown(on);
 				mc.options.keySprint.setDown(on);
 			}
-			case "hkey" -> net.minecraft.client.KeyMapping.click(com.mojang.blaze3d.platform.InputConstants.Type.KEYSYM.getOrCreate(com.mojang.blaze3d.platform.InputConstants.KEY_H));
+			case "hkey" -> net.minecraft.client.KeyMapping.click(com.mojang.blaze3d.platform.InputConstants.Type.KEYBOARD.getOrCreate(com.mojang.blaze3d.platform.InputConstants.KEY_H));
 			case "screen" -> mc.gui.openChatScreen(net.minecraft.client.gui.components.ChatComponent.ChatMethod.MESSAGE);
 			case "cam" -> mc.options.setCameraType(a[1].equals("3") ? net.minecraft.client.CameraType.THIRD_PERSON_BACK : net.minecraft.client.CameraType.FIRST_PERSON);
 			case "shot" -> net.minecraft.client.Screenshot.grab(mc, false);
 			case "respawn" -> mc.player.respawn();
-			case "drop" -> mc.player.drop(false);
+			case "drop" -> net.minecraft.client.KeyMapping.click(mc.options.keyDrop.getDefaultKey());
 			case "setvol" -> mc.options.getSoundSourceOptionInstance(net.minecraft.sounds.SoundSource.MASTER).set(Double.parseDouble(a[1]));
 			case "keyuse" -> mc.options.keyUse.setDown(a[1].equals("on"));
 			case "use" -> mc.gameMode.useItem(mc.player, a[1].equals("off")
@@ -178,7 +178,7 @@ public class DisabilityClient implements ClientModInitializer {
 			net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking.registerGlobalReceiver(com.ced.disabilities.ModCheck.Hello.TYPE, (payload, context) -> {});
 		}
 		KeyMapping toggle = KeyMappingHelper.registerKeyMapping(new KeyMapping(
-				"key.mors-disability.toggle_list", InputConstants.Type.KEYSYM, InputConstants.KEY_H,
+				"key.mors-disability.toggle_list", InputConstants.Type.KEYBOARD, InputConstants.KEY_H,
 				KeyMapping.Category.register(Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "main"))));
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {

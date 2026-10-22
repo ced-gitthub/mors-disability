@@ -89,8 +89,7 @@ public final class Hallucination {
 		fake.yHeadRot = real.yHeadRot; fake.yHeadRotO = real.yHeadRotO;
 		fake.tickCount = real.tickCount;
 		fake.hurtTime = real.hurtTime;
-		fake.swingTime = real.swingTime;
-		fake.attackAnim = real.attackAnim;
+		if (real.isSwinging() && !fake.isSwinging()) { var s = real.getCurrentSwing(); if (s != null) fake.swing(s.hand(), s.animation(), false); }
 		fake.walkAnimation.update(Math.min(1.0f, (float) Math.hypot(real.getX() - real.xo, real.getZ() - real.zo) * 4.0f), 0.4f, 1.0f);
 	}
 

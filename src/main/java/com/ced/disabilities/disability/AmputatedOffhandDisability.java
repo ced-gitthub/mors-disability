@@ -20,7 +20,7 @@ public class AmputatedOffhandDisability extends Disability {
 		net.minecraft.world.item.ItemStack off = player.getOffhandItem();
 		if (off.isEmpty()) return;
 		player.setItemInHand(InteractionHand.OFF_HAND, net.minecraft.world.item.ItemStack.EMPTY);
-		if (!player.getInventory().add(off)) player.drop(off, false);
+		if (!player.getInventory().add(off)) player.drop(off, false, net.minecraft.util.Prediction.SERVER_ONLY);
 	}
 
 	private static boolean owns(Player p) {

@@ -25,7 +25,7 @@ public class TouretteDisability extends Disability {
 		player.level().playSound(null, player.getX(), player.getY(), player.getZ(), noise, SoundSource.PLAYERS, 1.0f, 1.0f);
 		if (player.onGround()) {
 			player.addDeltaMovement(new net.minecraft.world.phys.Vec3(0, 0.3, 0));
-			player.hurtMarked = true;
+			player.syncVelocity = true;
 		}
 	}
 }
