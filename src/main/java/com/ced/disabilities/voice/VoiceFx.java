@@ -44,6 +44,8 @@ public final class VoiceFx {
 		VoicechatServerApi s = server;
 		if (s == null) return false;
 		VoicechatConnection c = s.getConnectionOf(p.getUUID());
+		if (SELFTEST) DisabilityMod.LOGGER.info("[selftest] voice connection={} connected={} disabled={}", c != null,
+				c != null && c.isConnected(), c != null && c.isDisabled());
 		return c != null && c.isConnected() && !c.isDisabled();
 	}
 
