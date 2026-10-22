@@ -13,12 +13,9 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
@@ -51,7 +48,7 @@ public class DisabilityClient implements ClientModInitializer {
 				mc.options.keySprint.setDown(on);
 			}
 			case "hkey" -> net.minecraft.client.KeyMapping.click(com.mojang.blaze3d.platform.InputConstants.Type.KEYSYM.getOrCreate(com.mojang.blaze3d.platform.InputConstants.KEY_H));
-			case "screen" -> mc.setScreen(new net.minecraft.client.gui.screens.ChatScreen("", false));
+			case "screen" -> mc.setScreen(new net.minecraft.client.gui.screens.ChatScreen(""));
 			case "cam" -> mc.options.setCameraType(a[1].equals("3") ? net.minecraft.client.CameraType.THIRD_PERSON_BACK : net.minecraft.client.CameraType.FIRST_PERSON);
 			case "shot" -> net.minecraft.client.Screenshot.grab(mc.gameDirectory, mc.getMainRenderTarget(), c -> {});
 			case "respawn" -> mc.player.respawn();
@@ -72,7 +69,7 @@ public class DisabilityClient implements ClientModInitializer {
 				try {
 					java.nio.file.Files.writeString(java.nio.file.Path.of("selftest.out"),
 							"vol=" + vol + " sprinting=" + mc.player.isSprinting() + " hp=" + mc.player.getHealth() + " yaw=" + y0 + " countdown=" + remainingTicks(mc) + " barMax=" + barMax
-										+ " mouse=" + (int) mc.mouseHandler.getScaledXPos(mc.getWindow()) + "," + (int) mc.mouseHandler.getScaledYPos(mc.getWindow())
+										+ " mouse=" + (int) (mc.mouseHandler.xpos() * mc.getWindow().getGuiScaledWidth() / mc.getWindow().getScreenWidth()) + "," + (int) (mc.mouseHandler.ypos() * mc.getWindow().getGuiScaledHeight() / mc.getWindow().getScreenHeight())
 										+ " showList=" + showList + " collapsed=" + collapsed + " gui=" + mc.getWindow().getGuiScaledWidth() + "x" + mc.getWindow().getGuiScaledHeight()
 										+ " win=" + mc.getWindow().getWidth() + "x" + mc.getWindow().getHeight() + "\n",
 							java.nio.file.StandardOpenOption.CREATE, java.nio.file.StandardOpenOption.APPEND);
@@ -132,8 +129,8 @@ public class DisabilityClient implements ClientModInitializer {
 			team.setNameTagVisibility(net.minecraft.world.scores.Team.Visibility.NEVER);
 		}
 		for (var info : mc.getConnection().getOnlinePlayers()) {
-			String name = info.getProfile().name();
-			if (name.equals(mc.player.getGameProfile().name()) || sb.getPlayersTeam(name) != null) continue;
+			String name = info.getProfile().getName();
+			if (name.equals(mc.player.getGameProfile().getName()) || sb.getPlayersTeam(name) != null) continue;
 			sb.addPlayerToTeam(name, team);
 		}
 		hiddenNames = team.getPlayers().size();
@@ -274,8 +271,8 @@ public class DisabilityClient implements ClientModInitializer {
 		int h = headH + 2 + (collapsed ? 0 : Math.max(owned.size(), nextLeft != null ? 1 : 0) * ROW_H) + 2;
 
 		boolean cursorFree = mc.screen != null;
-		int mx = cursorFree ? (int) mc.mouseHandler.getScaledXPos(mc.getWindow()) : -1;
-		int my = cursorFree ? (int) mc.mouseHandler.getScaledYPos(mc.getWindow()) : -1;
+		int mx = cursorFree ? (int) (mc.mouseHandler.xpos() * mc.getWindow().getGuiScaledWidth() / mc.getWindow().getScreenWidth()) : -1;
+		int my = cursorFree ? (int) (mc.mouseHandler.ypos() * mc.getWindow().getGuiScaledHeight() / mc.getWindow().getScreenHeight()) : -1;
 		boolean overHead = mx >= x && mx < x + w && my >= y && my < y + headH;
 		headW = w;
 

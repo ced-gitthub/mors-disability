@@ -5,7 +5,6 @@ import com.ced.disabilities.DisabilityManager;
 import com.ced.disabilities.DisabilityMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -40,7 +39,7 @@ public final class Hallucination {
 	private Hallucination() {}
 
 	public static boolean active(Minecraft mc) {
-		return mc.player != null && mc.DisabilityManager.ownedOf(player).contains("schizophrenia");
+		return mc.player != null && DisabilityManager.ownedOf(mc.player).contains("schizophrenia");
 	}
 
 	private static boolean isFake(Entity e) {
@@ -65,7 +64,7 @@ public final class Hallucination {
 		if (f == null) {
 			List<EntityType<?>> pool = poolFor(real);
 			EntityType<?> t = pool.get(RANDOM.nextInt(pool.size()));
-			if (RANDOM.nextInt(100) >= SWAP_PERCENT || t == real.getType() || !(t.create(mc.level, EntitySpawnReason.LOAD) instanceof LivingEntity le)) {
+			if (RANDOM.nextInt(100) >= SWAP_PERCENT || t == real.getType() || !(t.create(mc.level) instanceof LivingEntity le)) {
 				UNCHANGED.add(id);
 				return null;
 			}
@@ -90,7 +89,7 @@ public final class Hallucination {
 		fake.hurtTime = real.hurtTime;
 		fake.swingTime = real.swingTime;
 		fake.attackAnim = real.attackAnim;
-		fake.walkAnimation.update(Math.min(1.0f, (float) Math.hypot(real.getX() - real.xo, real.getZ() - real.zo) * 4.0f), 0.4f, 1.0f);
+		fake.walkAnimation.update(Math.min(1.0f, (float) Math.hypot(real.getX() - real.xo, real.getZ() - real.zo) * 4.0f), 0.4f);
 	}
 
 	public static void tick(Minecraft mc) {
