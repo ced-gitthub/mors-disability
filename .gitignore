@@ -5,3 +5,4 @@ run/
 client-out.txt
 client-err.txt
 .idea/
+.claude/
