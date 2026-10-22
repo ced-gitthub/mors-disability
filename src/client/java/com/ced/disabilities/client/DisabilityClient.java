@@ -9,7 +9,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
@@ -17,7 +17,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 
@@ -51,9 +51,9 @@ public class DisabilityClient implements ClientModInitializer {
 				mc.options.keySprint.setDown(on);
 			}
 			case "hkey" -> net.minecraft.client.KeyMapping.click(com.mojang.blaze3d.platform.InputConstants.Type.KEYSYM.getOrCreate(com.mojang.blaze3d.platform.InputConstants.KEY_H));
-			case "screen" -> mc.gui.openChatScreen(net.minecraft.client.gui.components.ChatComponent.ChatMethod.MESSAGE);
+			case "screen" -> mc.setScreen(new net.minecraft.client.gui.screens.ChatScreen("", false));
 			case "cam" -> mc.options.setCameraType(a[1].equals("3") ? net.minecraft.client.CameraType.THIRD_PERSON_BACK : net.minecraft.client.CameraType.FIRST_PERSON);
-			case "shot" -> net.minecraft.client.Screenshot.grab(mc, false);
+			case "shot" -> net.minecraft.client.Screenshot.grab(mc.gameDirectory, mc.getMainRenderTarget(), c -> {});
 			case "respawn" -> mc.player.respawn();
 			case "drop" -> mc.player.drop(false);
 			case "setvol" -> mc.options.getSoundSourceOptionInstance(net.minecraft.sounds.SoundSource.MASTER).set(Double.parseDouble(a[1]));
@@ -104,7 +104,7 @@ public class DisabilityClient implements ClientModInitializer {
 	private static int tremorLeft, tremorWait = 400;
 
 	private static void tremor(Minecraft mc, boolean on) {
-		if (!on || mc.player == null || mc.gui.screen() != null || !mc.player.isAlive()) { tremorLeft = 0; return; }
+		if (!on || mc.player == null || mc.screen != null || !mc.player.isAlive()) { tremorLeft = 0; return; }
 		if (tremorLeft > 0) {
 			tremorLeft--;
 			mc.player.turn((RANDOM.nextDouble() - 0.5) * 40, (RANDOM.nextDouble() - 0.5) * 30);
@@ -177,7 +177,7 @@ public class DisabilityClient implements ClientModInitializer {
 		if (!Boolean.getBoolean("disabilitystack.nohello")) {
 			net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking.registerGlobalReceiver(com.ced.disabilities.ModCheck.Hello.TYPE, (payload, context) -> {});
 		}
-		KeyMapping toggle = KeyMappingHelper.registerKeyMapping(new KeyMapping(
+		KeyMapping toggle = KeyBindingHelper.registerKeyBinding(new KeyMapping(
 				"key.mors-disability.toggle_list", InputConstants.Type.KEYSYM, InputConstants.KEY_H,
 				KeyMapping.Category.register(Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "main"))));
 
@@ -233,7 +233,7 @@ public class DisabilityClient implements ClientModInitializer {
 	private static boolean collapsed;
 	private static int headW;
 
-	private static void drawHud(GuiGraphicsExtractor g) {
+	private static void drawHud(GuiGraphics g) {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.player == null) return;
 		List<String> owned = mc.player.getAttachedOrElse(DisabilityManager.OWNED, List.of());
@@ -260,16 +260,16 @@ public class DisabilityClient implements ClientModInitializer {
 		if (nextLeft != null && !collapsed) w = Math.max(w, font.width("Next disability 00:00") + 10);
 		int h = headH + 2 + (collapsed ? 0 : Math.max(owned.size(), nextLeft != null ? 1 : 0) * ROW_H) + 2;
 
-		boolean cursorFree = mc.gui.screen() != null;
+		boolean cursorFree = mc.screen != null;
 		int mx = cursorFree ? (int) mc.mouseHandler.getScaledXPos(mc.getWindow()) : -1;
 		int my = cursorFree ? (int) mc.mouseHandler.getScaledYPos(mc.getWindow()) : -1;
 		boolean overHead = mx >= x && mx < x + w && my >= y && my < y + headH;
 		headW = w;
 
 		g.fill(x, y, x + w, y + h, 0xB0141420);
-		g.outline(x, y, w, h, 0xFF5A5A78);
+		g.renderOutline(x, y, w, h, 0xFF5A5A78);
 		if (overHead) g.fill(x + 1, y + 1, x + w - 1, y + headH, 0x30FFFFFF);
-		g.text(font, title, x + 5, y + 3, 0xFFFFFFFF, true);
+		g.drawString(font, title, x + 5, y + 3, 0xFFFFFFFF, true);
 		if (collapsed) return;
 
 		Disability hovered = null;
@@ -277,8 +277,8 @@ public class DisabilityClient implements ClientModInitializer {
 		if (nextLeft != null) {
 			int secs = Math.max(0, nextLeft - (int) (mc.player.tickCount - viewAt)) / 20;
 			String t = String.format("%d:%02d", secs / 60, secs % 60);
-			g.text(font, "Next disability", x + 5, ry + 2, 0xFFFFFFFF, true);
-			g.text(font, t, x + w - 5 - font.width(t), ry + 2, 0xFF9090B0, true);
+			g.drawString(font, "Next disability", x + 5, ry + 2, 0xFFFFFFFF, true);
+			g.drawString(font, t, x + w - 5 - font.width(t), ry + 2, 0xFF9090B0, true);
 		}
 		for (String id : owned) {
 			Disability d = Disabilities.get(id);
@@ -288,7 +288,7 @@ public class DisabilityClient implements ClientModInitializer {
 			g.blit(RenderPipelines.GUI_TEXTURED,
 					Identifier.fromNamespaceAndPath(DisabilityMod.MOD_ID, "textures/gui/disability/" + id + ".png"),
 					x + 3, ry + 1, 0f, 0f, 10, 10, 16, 16, 16, 16);
-			g.text(font, d != null ? d.displayName : id, x + 17, ry + 2, 0xFFFFFFFF, true);
+			g.drawString(font, d != null ? d.displayName : id, x + 17, ry + 2, 0xFFFFFFFF, true);
 			Integer left = view.get(id);
 			if (left != null) {
 				int elapsed = (int) (mc.player.tickCount - viewAt);
@@ -296,7 +296,7 @@ public class DisabilityClient implements ClientModInitializer {
 				if (rem == 0) for (int v : view.values()) rem = Math.max(rem, v - elapsed);
 				int secs = rem / 20;
 				String t = String.format("%d:%02d", secs / 60, secs % 60);
-				g.text(font, t, x + w - 5 - font.width(t), ry + 2, 0xFF9090B0, true);
+				g.drawString(font, t, x + w - 5 - font.width(t), ry + 2, 0xFF9090B0, true);
 			}
 			if (over && d != null) hovered = d;
 			ry += ROW_H;
@@ -305,8 +305,8 @@ public class DisabilityClient implements ClientModInitializer {
 			int tw = font.width(hovered.description) + 8;
 			int tx = Math.min(mx + 10, mc.getWindow().getGuiScaledWidth() - tw - 2), ty = my + 10;
 			g.fill(tx, ty, tx + tw, ty + 16, 0xF0100010);
-			g.outline(tx, ty, tw, 16, 0xFF5000A0);
-			g.text(font, hovered.description, tx + 4, ty + 4, 0xFFFFFFFF, true);
+			g.renderOutline(tx, ty, tw, 16, 0xFF5000A0);
+			g.drawString(font, hovered.description, tx + 4, ty + 4, 0xFFFFFFFF, true);
 		}
 	}
 }

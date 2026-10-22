@@ -29,7 +29,7 @@ public class AsthmaDisability extends Disability {
 			if (left <= 1) attack.remove(id); else attack.put(id, left - 1);
 			return;
 		}
-		if (!player.isSprinting() && !(Boolean.getBoolean("disabilitystack.selftest") && player.entityTags().contains("selftest_sprint"))) {
+		if (!player.isSprinting() && !(Boolean.getBoolean("disabilitystack.selftest") && player.getTags().contains("selftest_sprint"))) {
 			sprinting.remove(id);
 			return;
 		}

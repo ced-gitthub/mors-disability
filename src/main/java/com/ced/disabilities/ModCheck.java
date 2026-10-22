@@ -21,7 +21,7 @@ public final class ModCheck {
 	private ModCheck() {}
 
 	public static void init() {
-		PayloadTypeRegistry.clientboundConfiguration().register(Hello.TYPE, Hello.CODEC);
+		PayloadTypeRegistry.configurationS2C().register(Hello.TYPE, Hello.CODEC);
 		ServerConfigurationConnectionEvents.CONFIGURE.register((handler, server) -> {
 			if (!ServerConfigurationNetworking.canSend(handler, Hello.TYPE)) {
 				handler.disconnect(Component.literal("This server requires the Mors Disability mod (mors-disability). Install it and rejoin."));

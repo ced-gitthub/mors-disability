@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.decoration.ArmorStand;
@@ -21,13 +20,13 @@ import java.util.List;
 import java.util.Map;
 
 public final class Hallucination {
-	private static final List<EntityType<?>> GROUND = List.of(EntityTypes.ZOMBIE, EntityTypes.SKELETON, EntityTypes.CREEPER,
-			EntityTypes.VILLAGER, EntityTypes.SPIDER, EntityTypes.PIG, EntityTypes.COW, EntityTypes.SHEEP, EntityTypes.WITCH,
-			EntityTypes.ENDERMAN, EntityTypes.PILLAGER, EntityTypes.ZOMBIFIED_PIGLIN);
-	private static final List<EntityType<?>> SEA = List.of(EntityTypes.SQUID, EntityTypes.GLOW_SQUID, EntityTypes.COD,
-			EntityTypes.SALMON, EntityTypes.TROPICAL_FISH, EntityTypes.PUFFERFISH, EntityTypes.DOLPHIN, EntityTypes.GUARDIAN);
-	private static final List<EntityType<?>> AIR = List.of(EntityTypes.BAT, EntityTypes.PARROT, EntityTypes.BEE,
-			EntityTypes.PHANTOM, EntityTypes.VEX, EntityTypes.ALLAY, EntityTypes.GHAST, EntityTypes.BLAZE);
+	private static final List<EntityType<?>> GROUND = List.of(EntityType.ZOMBIE, EntityType.SKELETON, EntityType.CREEPER,
+			EntityType.VILLAGER, EntityType.SPIDER, EntityType.PIG, EntityType.COW, EntityType.SHEEP, EntityType.WITCH,
+			EntityType.ENDERMAN, EntityType.PILLAGER, EntityType.ZOMBIFIED_PIGLIN);
+	private static final List<EntityType<?>> SEA = List.of(EntityType.SQUID, EntityType.GLOW_SQUID, EntityType.COD,
+			EntityType.SALMON, EntityType.TROPICAL_FISH, EntityType.PUFFERFISH, EntityType.DOLPHIN, EntityType.GUARDIAN);
+	private static final List<EntityType<?>> AIR = List.of(EntityType.BAT, EntityType.PARROT, EntityType.BEE,
+			EntityType.PHANTOM, EntityType.VEX, EntityType.ALLAY, EntityType.GHAST, EntityType.BLAZE);
 	private static final Random RANDOM = new Random();
 
 	private static final int SWAP_PERCENT = 20;
