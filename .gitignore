@@ -6,3 +6,4 @@ client-out.txt
 client-err.txt
 .idea/
 .claude/
+server-out.txt
