@@ -3,8 +3,9 @@
 	"id": "mors-disability",
 	"version": "${version}",
 	"name": "Mors Disability",
-	"description": "Gain a random disability on a timer per player. Severity-based timers, configured in config/mors-disability.json (OP only).",
+	"description": "Gain a random disability on a timer per player. Severity-based timers, configured in config/mors-disability.json (OP only). Inspired by the Disabilities mod by OddSense.",
 	"authors": ["Mors"],
+	"contributors": ["OddSense (author of the Disabilities mod that inspired this one)"],
 	"contact": {"homepage": "https://modrinth.com/mod/mors-disability", "donation": "https://ko-fi.com/morsvald"},
 	"custom": {"modmenu": {"links": {"modmenu.donate": "https://ko-fi.com/morsvald"}}},
 	"license": "MIT",
@@ -12,9 +13,9 @@
 	"environment": "*",
 	"mixins": [{"config": "mors-disability.client.mixins.json", "environment": "client"}],
 	"entrypoints": {
-		"main": ["com.mors.disabilities.DisabilityMod"],
-		"client": ["com.mors.disabilities.client.DisabilityClient"],
-		"voicechat": ["com.mors.disabilities.voice.VoicechatIntegration"]
+		"main": ["com.ced.disabilities.DisabilityMod"],
+		"client": ["com.ced.disabilities.client.DisabilityClient"],
+		"voicechat": ["com.ced.disabilities.voice.VoicechatIntegration"]
 	},
 	"suggests": {
 		"voicechat": "*"

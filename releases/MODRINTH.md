@@ -8,6 +8,7 @@ Loader: Fabric. Game version: 26.2. Client and server: required on both.
 Dependency: Fabric API (required).
 License: MIT
 
+Credits: inspired by the [Disabilities](https://modrinth.com/mod/disabilities) mod by OddSense. Mors Disability is an independent implementation with no code or assets copied from it.
 
 
 ## Description
@@ -21,6 +22,7 @@ Every player randomly gains real-life inspired disabilities on a timer. Blindnes
 
 **Warning: includes screen shaking and seizure effects. Not suitable for players sensitive to flashing or shaking visuals.**
 
+Inspired by the [Disabilities](https://modrinth.com/mod/disabilities) mod by OddSense. This is an independent implementation, with no code or assets copied from it.
 
 **Must be installed on both the server and every client.** Players without the mod are refused at login. Requires Fabric API.
 
@@ -82,6 +84,8 @@ Use these ids with `/disability give` and in `disabledDisabilities`.
 ## Support
 If you enjoy the mod, you can support development on Ko-fi: https://ko-fi.com/morsvald
 
+## Credits
+Inspired by [Disabilities](https://modrinth.com/mod/disabilities) by OddSense. Licensed MIT.
 
 ---
 
