@@ -1,0 +1,551 @@
+{
+  "build.gradle": {
+    "mtime": 1792687084.501414,
+    "seen": 1793458974.4208796,
+    "ast_hash": "69516a9d28c9c137e468239c9202df80",
+    "semantic_hash": "69516a9d28c9c137e468239c9202df80"
+  },
+  "gradlew": {
+    "mtime": 1792183490.0,
+    "seen": 1793458974.4218802,
+    "ast_hash": "a43be8432bac3ffd05b3769aa42fe996",
+    "semantic_hash": "a43be8432bac3ffd05b3769aa42fe996"
+  },
+  "release.sh": {
+    "mtime": 1792623220.5945737,
+    "seen": 1793458974.4218802,
+    "ast_hash": "e9fcaa56a0a72a82f7df09c76fafa77d",
+    "semantic_hash": "e9fcaa56a0a72a82f7df09c76fafa77d"
+  },
+  "settings.gradle": {
+    "mtime": 1792601426.7454116,
+    "seen": 1793458974.4218802,
+    "ast_hash": "26866644a7bce34549a2cfe32f3a7191",
+    "semantic_hash": "26866644a7bce34549a2cfe32f3a7191"
+  },
+  "src/client/java/com/ced/disabilities/client/DisabilityClient.java": {
+    "mtime": 1792687084.5089314,
+    "seen": 1793458974.4228802,
+    "ast_hash": "a5b799060915ccaf90b940bf3d9eecca",
+    "semantic_hash": "a5b799060915ccaf90b940bf3d9eecca"
+  },
+  "src/client/java/com/ced/disabilities/client/Hallucination.java": {
+    "mtime": 1792687084.5104396,
+    "seen": 1793458974.4228802,
+    "ast_hash": "823dda0f33ab8e001b20fe268c525ef7",
+    "semantic_hash": "823dda0f33ab8e001b20fe268c525ef7"
+  },
+  "src/client/java/com/ced/disabilities/client/mixin/EntityRenderDispatcherMixin.java": {
+    "mtime": 1792687084.5122454,
+    "seen": 1793458974.4228802,
+    "ast_hash": "498717e0d7512c7f5295990238353b55",
+    "semantic_hash": "498717e0d7512c7f5295990238353b55"
+  },
+  "src/client/java/com/ced/disabilities/client/mixin/PlayerModelMixin.java": {
+    "mtime": 1792687084.5122454,
+    "seen": 1793458974.4228802,
+    "ast_hash": "4a54619da4f1942774fb8a298ffb93d9",
+    "semantic_hash": "4a54619da4f1942774fb8a298ffb93d9"
+  },
+  "src/client/resources/mors-disability.client.mixins.json": {
+    "mtime": 1792687084.5142572,
+    "seen": 1793458974.4238787,
+    "ast_hash": "353ad59e389cb88758aca1001fe0f556",
+    "semantic_hash": "353ad59e389cb88758aca1001fe0f556",
+    "ast_empty": true
+  },
+  "src/main/java/com/ced/disabilities/DisabilityCommand.java": {
+    "mtime": 1792687084.5154355,
+    "seen": 1793458974.4238787,
+    "ast_hash": "7d316eca74803780cc0dffd4e2c96dd4",
+    "semantic_hash": "7d316eca74803780cc0dffd4e2c96dd4"
+  },
+  "src/main/java/com/ced/disabilities/DisabilityConfig.java": {
+    "mtime": 1792665137.9240837,
+    "seen": 1793458974.4238787,
+    "ast_hash": "9cb2b27cc29428f7c850d9c95f0ce03e",
+    "semantic_hash": "9cb2b27cc29428f7c850d9c95f0ce03e"
+  },
+  "src/main/java/com/ced/disabilities/DisabilityManager.java": {
+    "mtime": 1792687084.5154355,
+    "seen": 1793458974.4238787,
+    "ast_hash": "41da71f6e9d02ebd5b6cd955574ed2f1",
+    "semantic_hash": "41da71f6e9d02ebd5b6cd955574ed2f1"
+  },
+  "src/main/java/com/ced/disabilities/DisabilityMod.java": {
+    "mtime": 1792661536.5695846,
+    "seen": 1793458974.4238787,
+    "ast_hash": "0c0ec630c8ebbc77214785ce4325a885",
+    "semantic_hash": "0c0ec630c8ebbc77214785ce4325a885"
+  },
+  "src/main/java/com/ced/disabilities/ModCheck.java": {
+    "mtime": 1792687084.5168831,
+    "seen": 1793458974.4238787,
+    "ast_hash": "1bed0b1af932b77810be17b7b64ab10b",
+    "semantic_hash": "1bed0b1af932b77810be17b7b64ab10b"
+  },
+  "src/main/java/com/ced/disabilities/disability/AdhdDisability.java": {
+    "mtime": 1792687084.5183096,
+    "seen": 1793458974.4253855,
+    "ast_hash": "6d9fcc64590bd761de85d67594712402",
+    "semantic_hash": "6d9fcc64590bd761de85d67594712402"
+  },
+  "src/main/java/com/ced/disabilities/disability/AmputatedOffhandDisability.java": {
+    "mtime": 1792687084.5197475,
+    "seen": 1793458974.4253855,
+    "ast_hash": "3721945ba48ac8428e5024183b460911",
+    "semantic_hash": "3721945ba48ac8428e5024183b460911"
+  },
+  "src/main/java/com/ced/disabilities/disability/AnosognosiaDisability.java": {
+    "mtime": 1792663409.0383813,
+    "seen": 1793458974.4253855,
+    "ast_hash": "9cac2d03b1422bd573b131647680fcc8",
+    "semantic_hash": "9cac2d03b1422bd573b131647680fcc8"
+  },
+  "src/main/java/com/ced/disabilities/disability/AsthmaDisability.java": {
+    "mtime": 1792687084.5197475,
+    "seen": 1793458974.4253855,
+    "ast_hash": "087e35a1788beeb8ab394007cded5d53",
+    "semantic_hash": "087e35a1788beeb8ab394007cded5d53"
+  },
+  "src/main/java/com/ced/disabilities/disability/AttributeDisability.java": {
+    "mtime": 1792687084.5207589,
+    "seen": 1793458974.4253855,
+    "ast_hash": "a16a806d5b5da7584cad0092f6661551",
+    "semantic_hash": "a16a806d5b5da7584cad0092f6661551"
+  },
+  "src/main/java/com/ced/disabilities/disability/BlindDisability.java": {
+    "mtime": 1792663409.0448875,
+    "seen": 1793458974.4253855,
+    "ast_hash": "49247d72d172a360f4c38bc1279fe36a",
+    "semantic_hash": "49247d72d172a360f4c38bc1279fe36a"
+  },
+  "src/main/java/com/ced/disabilities/disability/CancerDisability.java": {
+    "mtime": 1792687084.5222614,
+    "seen": 1793458974.4269164,
+    "ast_hash": "2b6ba788e31fd447c573dab2b5cc46f4",
+    "semantic_hash": "2b6ba788e31fd447c573dab2b5cc46f4"
+  },
+  "src/main/java/com/ced/disabilities/disability/CerebralPalsyDisability.java": {
+    "mtime": 1792686170.3726265,
+    "seen": 1793458974.4269164,
+    "ast_hash": "d73eedefdc712e9ff9684e38df94c705",
+    "semantic_hash": "d73eedefdc712e9ff9684e38df94c705"
+  },
+  "src/main/java/com/ced/disabilities/disability/ColorBlindDisability.java": {
+    "mtime": 1792663409.0504124,
+    "seen": 1793458974.4269164,
+    "ast_hash": "4f7b5b37f58b194be54057477ca3b9af",
+    "semantic_hash": "4f7b5b37f58b194be54057477ca3b9af"
+  },
+  "src/main/java/com/ced/disabilities/disability/CompositeDisability.java": {
+    "mtime": 1792663409.0524106,
+    "seen": 1793458974.4269164,
+    "ast_hash": "153bf6d183e819454705f849acfa1f70",
+    "semantic_hash": "153bf6d183e819454705f849acfa1f70"
+  },
+  "src/main/java/com/ced/disabilities/disability/DeafDisability.java": {
+    "mtime": 1792663409.0544102,
+    "seen": 1793458974.4279268,
+    "ast_hash": "52e0f3886cd18dd8d02ecd2c2ccbaf84",
+    "semantic_hash": "52e0f3886cd18dd8d02ecd2c2ccbaf84"
+  },
+  "src/main/java/com/ced/disabilities/disability/DementiaDisability.java": {
+    "mtime": 1792687084.5232666,
+    "seen": 1793458974.4279268,
+    "ast_hash": "59033b6d9ea7aec929de522ba7f485de",
+    "semantic_hash": "59033b6d9ea7aec929de522ba7f485de"
+  },
+  "src/main/java/com/ced/disabilities/disability/DiabetesDisability.java": {
+    "mtime": 1792687084.5247142,
+    "seen": 1793458974.4279268,
+    "ast_hash": "f0b237b5bd1fd4272b7327d5011685d5",
+    "semantic_hash": "f0b237b5bd1fd4272b7327d5011685d5"
+  },
+  "src/main/java/com/ced/disabilities/disability/Disabilities.java": {
+    "mtime": 1792687084.5257745,
+    "seen": 1793458974.4289262,
+    "ast_hash": "3f6109600b6f81d51bbcb860aa658391",
+    "semantic_hash": "3f6109600b6f81d51bbcb860aa658391"
+  },
+  "src/main/java/com/ced/disabilities/disability/Disability.java": {
+    "mtime": 1792663409.062571,
+    "seen": 1793458974.4289262,
+    "ast_hash": "b685211152a72553e494bb638060676b",
+    "semantic_hash": "b685211152a72553e494bb638060676b"
+  },
+  "src/main/java/com/ced/disabilities/disability/DyslexiaDisability.java": {
+    "mtime": 1792687084.5257745,
+    "seen": 1793458974.4289262,
+    "ast_hash": "b169d6d2380eb5fb56351a172bc94efd",
+    "semantic_hash": "b169d6d2380eb5fb56351a172bc94efd"
+  },
+  "src/main/java/com/ced/disabilities/disability/InsomniaDisability.java": {
+    "mtime": 1792687084.527254,
+    "seen": 1793458974.4289262,
+    "ast_hash": "819269e8f84ca0cc0046b268d31d48fd",
+    "semantic_hash": "819269e8f84ca0cc0046b268d31d48fd"
+  },
+  "src/main/java/com/ced/disabilities/disability/KleptomaniaDisability.java": {
+    "mtime": 1792663409.0690773,
+    "seen": 1793458974.4299266,
+    "ast_hash": "00b408fda2901683f8f1dacb4e3645fa",
+    "semantic_hash": "00b408fda2901683f8f1dacb4e3645fa"
+  },
+  "src/main/java/com/ced/disabilities/disability/LactoseDisability.java": {
+    "mtime": 1792687084.528255,
+    "seen": 1793458974.4299266,
+    "ast_hash": "e1a9605ed92368586a2ddd8d90f94f25",
+    "semantic_hash": "e1a9605ed92368586a2ddd8d90f94f25"
+  },
+  "src/main/java/com/ced/disabilities/disability/MuteDisability.java": {
+    "mtime": 1792687084.5296907,
+    "seen": 1793458974.4299266,
+    "ast_hash": "ea2670f8ebafb4602da6c2fdfaa7a14e",
+    "semantic_hash": "ea2670f8ebafb4602da6c2fdfaa7a14e"
+  },
+  "src/main/java/com/ced/disabilities/disability/NarcolepsyDisability.java": {
+    "mtime": 1792687084.5307114,
+    "seen": 1793458974.4299266,
+    "ast_hash": "54e230d2e7a08d732bfb4ea28c6db68a",
+    "semantic_hash": "54e230d2e7a08d732bfb4ea28c6db68a"
+  },
+  "src/main/java/com/ced/disabilities/disability/OcdDisability.java": {
+    "mtime": 1792663409.0780895,
+    "seen": 1793458974.4309251,
+    "ast_hash": "99826d34a4a57d74afcc97f11bfa1bbe",
+    "semantic_hash": "99826d34a4a57d74afcc97f11bfa1bbe"
+  },
+  "src/main/java/com/ced/disabilities/disability/ParkinsonDisability.java": {
+    "mtime": 1792663409.0801563,
+    "seen": 1793458974.4309251,
+    "ast_hash": "8c0286f49a397e72d2bdfcac9140ff70",
+    "semantic_hash": "8c0286f49a397e72d2bdfcac9140ff70"
+  },
+  "src/main/java/com/ced/disabilities/disability/PollenDisability.java": {
+    "mtime": 1792663409.082683,
+    "seen": 1793458974.4309251,
+    "ast_hash": "7515f6286e536214402050142379556f",
+    "semantic_hash": "7515f6286e536214402050142379556f"
+  },
+  "src/main/java/com/ced/disabilities/disability/ProsopagnosiaDisability.java": {
+    "mtime": 1792663409.0846782,
+    "seen": 1793458974.4309251,
+    "ast_hash": "57b85692d730890c8dc8f7aa22820d83",
+    "semantic_hash": "57b85692d730890c8dc8f7aa22820d83"
+  },
+  "src/main/java/com/ced/disabilities/disability/SchizophreniaDisability.java": {
+    "mtime": 1792687084.5319679,
+    "seen": 1793458974.4319263,
+    "ast_hash": "67abde59d9cb81728344bb5d997e6250",
+    "semantic_hash": "67abde59d9cb81728344bb5d997e6250"
+  },
+  "src/main/java/com/ced/disabilities/disability/SeizuresDisability.java": {
+    "mtime": 1792687084.5331173,
+    "seen": 1793458974.4319263,
+    "ast_hash": "4b9c5c59bd76e3c5630cefe9bae6f816",
+    "semantic_hash": "4b9c5c59bd76e3c5630cefe9bae6f816"
+  },
+  "src/main/java/com/ced/disabilities/disability/TouretteDisability.java": {
+    "mtime": 1792686170.3736262,
+    "seen": 1793458974.4319263,
+    "ast_hash": "47d11af904c725d08fc8bdc10b446cf0",
+    "semantic_hash": "47d11af904c725d08fc8bdc10b446cf0"
+  },
+  "src/main/java/com/ced/disabilities/disability/VertigoDisability.java": {
+    "mtime": 1792687084.5331173,
+    "seen": 1793458974.432925,
+    "ast_hash": "d0144571faaec11cb7f17be53ae35fc5",
+    "semantic_hash": "d0144571faaec11cb7f17be53ae35fc5"
+  },
+  "src/main/java/com/ced/disabilities/voice/VoiceFx.java": {
+    "mtime": 1792668690.978067,
+    "seen": 1793458974.432925,
+    "ast_hash": "18d9f085ebd76d26b6674f21fa801171",
+    "semantic_hash": "18d9f085ebd76d26b6674f21fa801171"
+  },
+  "src/main/java/com/ced/disabilities/voice/VoicechatIntegration.java": {
+    "mtime": 1792668690.8964593,
+    "seen": 1793458974.432925,
+    "ast_hash": "b52b38bfeb648bebeb73c9dec79cb270",
+    "semantic_hash": "b52b38bfeb648bebeb73c9dec79cb270"
+  },
+  "src/main/resources/assets/mors-disability/lang/en_us.json": {
+    "mtime": 1792687084.5351806,
+    "seen": 1793458974.432925,
+    "ast_hash": "358bee1d01f85df0404348791eab0eab",
+    "semantic_hash": "358bee1d01f85df0404348791eab0eab",
+    "ast_empty": true
+  },
+  "src/main/resources/fabric.mod.json": {
+    "mtime": 1792687084.53618,
+    "seen": 1793458974.432925,
+    "ast_hash": "9ba7400da46a252585748e75f96ca995",
+    "semantic_hash": "9ba7400da46a252585748e75f96ca995",
+    "ast_empty": true
+  },
+  "CLAUDE.md": {
+    "mtime": 1792686170.3615518,
+    "seen": 1793465156.4822,
+    "ast_hash": "dc5bb62b51857805a15ddc1db9b5d408",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1792687084.5004044,
+    "seen": 1793465156.4822,
+    "ast_hash": "240b3b57ad278363cc2fd48489161432",
+    "semantic_hash": ""
+  },
+  "releases/MODRINTH.md": {
+    "mtime": 1792687084.5039287,
+    "seen": 1793465156.4822,
+    "ast_hash": "2b77acf5a15e49689f6bc3b754f96f14",
+    "semantic_hash": ""
+  },
+  "releases/README.md": {
+    "mtime": 1792623220.5638843,
+    "seen": 1793465156.4822,
+    "ast_hash": "ed7b7836cdce5a94b2cfb40105305b93",
+    "semantic_hash": ""
+  },
+  "vault-test/Areas/Modrinth Mods/Fabric Mods/Mors Disability.md": {
+    "mtime": 1793458862.1516411,
+    "seen": 1793465156.4822,
+    "ast_hash": "a5c4ca3a5f3d0839fa1b2617d5d13ba0",
+    "semantic_hash": ""
+  },
+  "vault-test/Areas/Personal Use/Pera App.md": {
+    "mtime": 1793458862.146747,
+    "seen": 1793465156.4822,
+    "ast_hash": "f080ebd81d67adb1d3efe559e9a62e42",
+    "semantic_hash": ""
+  },
+  "vault-test/Areas/Personal Use/Workout.md": {
+    "mtime": 1793458862.1491117,
+    "seen": 1793465156.4822,
+    "ast_hash": "995addf48405d24d8de333911aec42db",
+    "semantic_hash": ""
+  },
+  "vault-test/Areas/Side Hustle/Tealloft.md": {
+    "mtime": 1793458862.1432078,
+    "seen": 1793465156.4822,
+    "ast_hash": "df521215bdbc7c638a89addc8d8e37cc",
+    "semantic_hash": ""
+  },
+  "vault-test/Areas/VAA Philippines/VAA CRM.md": {
+    "mtime": 1793458862.1372132,
+    "seen": 1793465156.4822,
+    "ast_hash": "4de9968266c8bf16321b2a6fe10cb4f5",
+    "semantic_hash": ""
+  },
+  "vault-test/Areas/VAA Philippines/VAA Work.md": {
+    "mtime": 1793458862.1404157,
+    "seen": 1793465156.4822,
+    "ast_hash": "59938a16426b8c0f821b438c309dcc01",
+    "semantic_hash": ""
+  },
+  "vault-test/CLAUDE.md": {
+    "mtime": 1793458862.1291473,
+    "seen": 1793465156.4822,
+    "ast_hash": "17d630db53ada1db81d07dd57a72ecc1",
+    "semantic_hash": ""
+  },
+  "vault-test/GLOBAL-CLAUDE-draft.md": {
+    "mtime": 1793458862.1316626,
+    "seen": 1793465156.4822,
+    "ast_hash": "a95f1606bd42efcae7cae71777b77609",
+    "semantic_hash": ""
+  },
+  "vault-test/Projects Hub.md": {
+    "mtime": 1793458862.1351829,
+    "seen": 1793465156.4822,
+    "ast_hash": "9c9430f70c4109fae2efdcd9284cf149",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/icon.png": {
+    "mtime": 1792603957.6724873,
+    "seen": 1793465156.4822,
+    "ast_hash": "0e1f6d140fc0bd9737644f0a7c5f455e",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/adhd.png": {
+    "mtime": 1792603957.6264646,
+    "seen": 1793465156.4822,
+    "ast_hash": "4866f15499f71113c39eed44723c8664",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/amputated_leg.png": {
+    "mtime": 1792603957.5880675,
+    "seen": 1793465156.4822,
+    "ast_hash": "305043c9326f7adb8c7e65d80b80e229",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/amputated_offhand.png": {
+    "mtime": 1792603957.5789964,
+    "seen": 1793465156.4822,
+    "ast_hash": "939f5d60fc5e6b1deedae82d3ee3525b",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/anosognosia.png": {
+    "mtime": 1792609862.0481637,
+    "seen": 1793465156.4822,
+    "ast_hash": "b64a65e5242a34da50e018b2ac06e2a3",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/arthritis.png": {
+    "mtime": 1792603957.5332322,
+    "seen": 1793465156.4822,
+    "ast_hash": "b355c7124d4dd6329ee4e9b6e2e4d2de",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/asthma.png": {
+    "mtime": 1792603957.5564132,
+    "seen": 1793465156.4822,
+    "ast_hash": "f6acb29e97e5ead4def61c8a32c2a8ee",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/blind.png": {
+    "mtime": 1792603957.494263,
+    "seen": 1793465156.4822,
+    "ast_hash": "f11c3d85762f81ba690b51342876507b",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/brittle_bones.png": {
+    "mtime": 1792603957.5030801,
+    "seen": 1793465156.4822,
+    "ast_hash": "5a278812c39e17ac46d51a9187c9f317",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/cancer.png": {
+    "mtime": 1792603957.517635,
+    "seen": 1793465156.4822,
+    "ast_hash": "5dd2e275dead42be7320e608dd624e06",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/cerebral_palsy.png": {
+    "mtime": 1792603957.6106255,
+    "seen": 1793465156.4822,
+    "ast_hash": "67bcd64408fb8e8db2f86f9bbacb20a0",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/color_blind.png": {
+    "mtime": 1792609862.0363412,
+    "seen": 1793465156.4822,
+    "ast_hash": "eb618424b8cd1f1888cc2fb32e442a73",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/deaf.png": {
+    "mtime": 1792603957.6348796,
+    "seen": 1793465156.4822,
+    "ast_hash": "896348d51e18fbe1df1f58d4382891d8",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/dementia.png": {
+    "mtime": 1792609862.0428574,
+    "seen": 1793465156.4822,
+    "ast_hash": "d62a372b46417951b9e26ce136c00dad",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/diabetes.png": {
+    "mtime": 1792603957.6195803,
+    "seen": 1793465156.4822,
+    "ast_hash": "9fe9e9445d3a9c0f1478b8c156783865",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/dyslexia.png": {
+    "mtime": 1792609862.050167,
+    "seen": 1793465156.4822,
+    "ast_hash": "130a36b8f7dce41bcea9401a77ddfb7b",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/insomnia.png": {
+    "mtime": 1792603957.526632,
+    "seen": 1793465156.4822,
+    "ast_hash": "45171afd55bed9c806d9d1c4a52a6367",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/kleptomania.png": {
+    "mtime": 1792603957.5410607,
+    "seen": 1793465156.4822,
+    "ast_hash": "35f470d745742d837aee39842ee4b3b7",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/lactose_intolerance.png": {
+    "mtime": 1792603957.5490818,
+    "seen": 1793465156.4822,
+    "ast_hash": "80bdb6c96d4a7bf043dbaea66ba823ad",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/mute.png": {
+    "mtime": 1792603957.5709224,
+    "seen": 1793465156.4822,
+    "ast_hash": "def404425995e5d3af5287ed31503163",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/narcolepsy.png": {
+    "mtime": 1792603957.5955489,
+    "seen": 1793465156.4822,
+    "ast_hash": "da20260d7c0d63c15e0e2ddb0e735170",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/ocd.png": {
+    "mtime": 1792609862.038854,
+    "seen": 1793465156.4822,
+    "ast_hash": "a52f58dbf13b17598e7a7c162873500d",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/parkinsons.png": {
+    "mtime": 1792603957.6422749,
+    "seen": 1793465156.4822,
+    "ast_hash": "ae730866c0dd58244e403557dff266f1",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/pollen_allergy.png": {
+    "mtime": 1792603957.5634165,
+    "seen": 1793465156.4822,
+    "ast_hash": "3f71d2d55f02d4f7e2f9fba94ad07992",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/prosopagnosia.png": {
+    "mtime": 1792609862.047165,
+    "seen": 1793465156.4822,
+    "ast_hash": "8ee35d70bc3e9e8afa7324886a809786",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/schizophrenia.png": {
+    "mtime": 1792609862.044364,
+    "seen": 1793465156.4822,
+    "ast_hash": "23e95a02917a1eca12b711c0fd2db7f3",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/scoliosis.png": {
+    "mtime": 1792609862.0408535,
+    "seen": 1793465156.4822,
+    "ast_hash": "5c88bf503442f1e5b904b6d90704a8d8",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/seizures.png": {
+    "mtime": 1792609862.0398538,
+    "seen": 1793465156.4822,
+    "ast_hash": "342a83397933e75672af2371080fa1f3",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/short.png": {
+    "mtime": 1792603957.5097058,
+    "seen": 1793465156.4822,
+    "ast_hash": "69d4e2363a725bc7c9206b7491b12273",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/tourette.png": {
+    "mtime": 1792603957.6030226,
+    "seen": 1793465156.4822,
+    "ast_hash": "a5c1e9e27de338b842560040ca56cd51",
+    "semantic_hash": ""
+  },
+  "src/main/resources/assets/mors-disability/textures/gui/disability/vertigo.png": {
+    "mtime": 1792609862.044364,
+    "seen": 1793465156.4822,
+    "ast_hash": "80d88d653b29f3a70a68c0243aeef991",
+    "semantic_hash": ""
+  }
+}
